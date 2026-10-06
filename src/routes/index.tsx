@@ -3,6 +3,9 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import hero from "@/assets/hero.jpg";
+import bn1 from "@/assets/bn1.png";
+import bn2 from "@/assets/bn2.png";
+
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { ProductGrid } from "@/components/site/Catalog";
 import { productsQuery } from "@/lib/products";
@@ -22,8 +25,8 @@ export const Route = createFileRoute("/")({
 
 const SLIDES = [
   { img: hero, tag: "🎄 EDIÇÃO ESPECIAL DE NATAL", title: <>NATAL NA <span className="text-primary">NINELIVES!</span></>, text: "Decorações em 3D para deixar seu Natal ainda mais especial.", to: "/filamento?categoria=Natal", cta: "EXPLORAR PRODUTOS" },
-  { img: "/src/assets/bn1.png", tag: "🎭 COLECIONÁVEIS", title: <>FIGURES <span className="text-primary">ACTIONS</span></>, text: "Dê vida aos seus personagens favoritos. Confira alguns dos modelos que temos disponíveis.", to: "/figures", cta: "VER FIGURES" },
-  { img: "/src/assets/bn2.png", tag: "🧩 IMPRESSÃO 3D", title: <>PEÇAS <span className="text-primary">IMPRESSÃO 3D</span></>, text: "Peças funcionais e decorativas feitas com impressão 3D. Confira nossos modelos!", to: "/filamento", cta: "VER PEÇAS" },
+  { img: bn1, tag: "🎭 COLECIONÁVEIS", title: <>FIGURES <span className="text-primary">ACTIONS</span></>, text: "Dê vida aos seus personagens favoritos. Confira alguns dos modelos que temos disponíveis.", to: "/figures", cta: "VER FIGURES" },
+  { img: bn2, tag: "🧩 IMPRESSÃO 3D", title: <>PEÇAS <span className="text-primary">IMPRESSÃO 3D</span></>, text: "Peças funcionais e decorativas feitas com impressão 3D. Confira nossos modelos!", to: "/filamento", cta: "VER PEÇAS" },
 ];
 
 function HeroCarousel() {
