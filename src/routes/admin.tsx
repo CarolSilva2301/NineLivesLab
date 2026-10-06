@@ -143,7 +143,7 @@ function L({ label, children }: { label: string; children: React.ReactNode }) {
 function fileToBase64(f: File) {
   return new Promise<string>((res, rej) => {
     const r = new FileReader();
-    r.onload = () => res(String(r.result).split(",")[1]);
+    r.onload = () => res(String(r.result).split(",")[1] ?? "");
     r.onerror = rej;
     r.readAsDataURL(f);
   });
@@ -172,8 +172,8 @@ function ProductForm({ creds, product, onDone }: { creds: Creds; product: Produc
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!f.product_type) return toast.error("Escolha o tipo do produto");
-    if (!f.category) return toast.error("Escolha a categoria");
+    if (!f.product_type) { toast.error("Escolha o tipo do produto"); return; }
+    if (!f.category) { toast.error("Escolha a categoria"); return; }
     setBusy(true);
     try {
       await save({ data: { creds, id: product?.id ?? null, product: {

@@ -10,7 +10,7 @@ export function ProductModal({ p, onClose }: { p: Product | null; onClose: () =>
   if (!p) return null;
   const images = [p.image_url, ...p.extra_images].filter(Boolean) as string[];
   const rows: [string, string][] = [
-    ["Dimensões", p.dimensions], ["Material", p.material], ["Cores", p.colors], ["Disponibilidade", STATUS[p.status]],
+    ["Dimensões", p.dimensions], ["Material", p.material], ["Cores", p.colors], ["Disponibilidade", STATUS[p.status] ?? ""],
   ];
   return (
     <Dialog open={!!p} onOpenChange={(o) => !o && onClose()}>
