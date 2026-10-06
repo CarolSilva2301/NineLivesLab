@@ -1,0 +1,1 @@
+UPDATE public.products SET image_url = CASE WHEN product_type='figure' THEN '/images/figure.jpg' ELSE '/images/filamento.jpg' END WHERE image_url IS NULL;

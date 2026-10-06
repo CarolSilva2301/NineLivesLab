@@ -10,33 +10,115 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as ContatoRouteImport } from './routes/contato'
+import { Route as FiguresRouteImport } from './routes/figures'
+import { Route as FilamentoRouteImport } from './routes/filamento'
+import { Route as SobreRouteImport } from './routes/sobre'
+import { Route as ApiPublicImgSplatRouteImport } from './routes/api/public/img.$'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContatoRoute = ContatoRouteImport.update({
+  id: '/contato',
+  path: '/contato',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FiguresRoute = FiguresRouteImport.update({
+  id: '/figures',
+  path: '/figures',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FilamentoRoute = FilamentoRouteImport.update({
+  id: '/filamento',
+  path: '/filamento',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SobreRoute = SobreRouteImport.update({
+  id: '/sobre',
+  path: '/sobre',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicImgSplatRoute = ApiPublicImgSplatRouteImport.update({
+  id: '/api/public/img/$',
+  path: '/api/public/img/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/contato': typeof ContatoRoute
+  '/figures': typeof FiguresRoute
+  '/filamento': typeof FilamentoRoute
+  '/sobre': typeof SobreRoute
+  '/api/public/img/$': typeof ApiPublicImgSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/contato': typeof ContatoRoute
+  '/figures': typeof FiguresRoute
+  '/filamento': typeof FilamentoRoute
+  '/sobre': typeof SobreRoute
+  '/api/public/img/$': typeof ApiPublicImgSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/contato': typeof ContatoRoute
+  '/figures': typeof FiguresRoute
+  '/filamento': typeof FilamentoRoute
+  '/sobre': typeof SobreRoute
+  '/api/public/img/$': typeof ApiPublicImgSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/contato'
+    | '/figures'
+    | '/filamento'
+    | '/sobre'
+    | '/api/public/img/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/admin'
+    | '/contato'
+    | '/figures'
+    | '/filamento'
+    | '/sobre'
+    | '/api/public/img/$'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/contato'
+    | '/figures'
+    | '/filamento'
+    | '/sobre'
+    | '/api/public/img/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
+  ContatoRoute: typeof ContatoRoute
+  FiguresRoute: typeof FiguresRoute
+  FilamentoRoute: typeof FilamentoRoute
+  SobreRoute: typeof SobreRoute
+  ApiPublicImgSplatRoute: typeof ApiPublicImgSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +130,59 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contato': {
+      id: '/contato'
+      path: '/contato'
+      fullPath: '/contato'
+      preLoaderRoute: typeof ContatoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/figures': {
+      id: '/figures'
+      path: '/figures'
+      fullPath: '/figures'
+      preLoaderRoute: typeof FiguresRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/filamento': {
+      id: '/filamento'
+      path: '/filamento'
+      fullPath: '/filamento'
+      preLoaderRoute: typeof FilamentoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sobre': {
+      id: '/sobre'
+      path: '/sobre'
+      fullPath: '/sobre'
+      preLoaderRoute: typeof SobreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/img/$': {
+      id: '/api/public/img/$'
+      path: '/api/public/img/$'
+      fullPath: '/api/public/img/$'
+      preLoaderRoute: typeof ApiPublicImgSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
+  ContatoRoute: ContatoRoute,
+  FiguresRoute: FiguresRoute,
+  FilamentoRoute: FilamentoRoute,
+  SobreRoute: SobreRoute,
+  ApiPublicImgSplatRoute: ApiPublicImgSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
