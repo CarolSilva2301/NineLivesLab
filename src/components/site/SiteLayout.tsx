@@ -6,7 +6,7 @@ import { SITE_CONFIG, whatsappLink } from "@/lib/config";
 const nav = [
   { to: "/", label: "Home" },
   { to: "/figures", label: "Figures" },
-  { to: "/filamento", label: "Filamento 3D" },
+  { to: "/filamento", label: "Impressão 3D" },
   { to: "/sobre", label: "Sobre" },
   { to: "/contato", label: "Contato" },
 ] as const;
@@ -14,11 +14,16 @@ const nav = [
 export function Logo() {
   return (
     <Link to="/" className="flex items-center gap-2 font-display text-lg font-bold tracking-tight">
-      <span className="grid h-8 w-8 place-items-center rounded-md bg-primary text-primary-foreground">9</span>
-      <span>NINE LIVES <span className="text-primary">LAB</span></span>
+      <img 
+        src="/images/ninelogo.png" 
+        alt="Nine Lives Lab" 
+        className="h-15 w-15 object-contain" 
+      />
+      <span>NINELIVES <span className="text-primary">LAB</span></span>
     </Link>
   );
 }
+
 
 export function SiteLayout({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);

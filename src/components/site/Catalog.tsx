@@ -24,7 +24,12 @@ export function ProductGrid({ items, empty }: { items: Product[]; empty?: string
 
 export function Catalog({ type, title, subtitle, placeholder }: { type: ProductType; title: string; subtitle: string; placeholder: string }) {
   const { data } = useSuspenseQuery(productsQuery);
-  const [cat, setCat] = useState("Todos");
+  const [cat, setCat] = useState(() => {
+  if (typeof window !== "undefined") {
+    return new URLSearchParams(window.location.search).get("categoria") || "Todos";
+  }
+  return "Todos";
+});
   const [q, setQ] = useState("");
   const cats = ["Todos", ...CATEGORIES[type]];
   const items = useMemo(() => data.filter((p) =>

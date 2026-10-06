@@ -21,9 +21,9 @@ export const Route = createFileRoute("/")({
 });
 
 const SLIDES = [
-  { img: hero, tag: "🎄 EDIÇÃO ESPECIAL DE NATAL", title: <>NATAL NA <span className="text-primary">NINE LIVES</span> LAB</>, text: "Figures, decoração e peças em 3D para deixar seu Natal ainda mais especial.", to: "#departamentos", cta: "EXPLORAR PRODUTOS" },
-  { img: "/images/figure.jpg", tag: "🎭 COLECIONÁVEIS", title: <>FIGURES <span className="text-primary">ÚNICAS</span></>, text: "Personagens para colecionar, presentear e decorar.", to: "/figures", cta: "VER FIGURES" },
-  { img: "/images/filamento.jpg", tag: "🧩 IMPRESSÃO 3D", title: <>PEÇAS EM <span className="text-primary">FILAMENTO 3D</span></>, text: "Peças funcionais e decorativas feitas sob medida.", to: "/filamento", cta: "VER PEÇAS" },
+  { img: hero, tag: "🎄 EDIÇÃO ESPECIAL DE NATAL", title: <>NATAL NA <span className="text-primary">NINELIVES!</span></>, text: "Decorações em 3D para deixar seu Natal ainda mais especial.", to: "/filamento?categoria=Natal", cta: "EXPLORAR PRODUTOS" },
+  { img: "/src/assets/bn1.png", tag: "🎭 COLECIONÁVEIS", title: <>FIGURES <span className="text-primary">ACTIONS</span></>, text: "Dê vida aos seus personagens favoritos. Confira alguns dos modelos que temos disponíveis.", to: "/figures", cta: "VER FIGURES" },
+  { img: "/src/assets/bn2.png", tag: "🧩 IMPRESSÃO 3D", title: <>PEÇAS <span className="text-primary">IMPRESSÃO 3D</span></>, text: "Peças funcionais e decorativas feitas com impressão 3D. Confira nossos modelos!", to: "/filamento", cta: "VER PEÇAS" },
 ];
 
 function HeroCarousel() {
@@ -55,8 +55,8 @@ function HeroCarousel() {
         </div>
       ))}
       <div className="snow pointer-events-none absolute inset-0" />
-      <button onClick={() => go(-1)} aria-label="Anterior" className="absolute left-3 top-1/2 z-10 hidden -translate-y-1/2 rounded-full bg-background/60 p-2 backdrop-blur md:block"><ChevronLeft className="h-6 w-6" /></button>
-      <button onClick={() => go(1)} aria-label="Próximo" className="absolute right-3 top-1/2 z-10 hidden -translate-y-1/2 rounded-full bg-background/60 p-2 backdrop-blur md:block"><ChevronRight className="h-6 w-6" /></button>
+      <button onClick={() => go(-1)} aria-label="Anterior" className="absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-background/60 p-1.5 backdrop-blur md:left-3 md:p-2"><ChevronLeft className="h-5 w-5 md:h-6 md:w-6" /></button>
+<button onClick={() => go(1)} aria-label="Próximo" className="absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-background/60 p-1.5 backdrop-blur md:right-3 md:p-2"><ChevronRight className="h-5 w-5 md:h-6 md:w-6" /></button>
       <div className="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 gap-2">
         {SLIDES.map((_, idx) => (
           <button key={idx} onClick={() => setI(idx)} aria-label={`Banner ${idx + 1}`} className={`h-2.5 rounded-full transition-all ${idx === i ? "w-8 bg-primary" : "w-2.5 bg-foreground/40"}`} />
