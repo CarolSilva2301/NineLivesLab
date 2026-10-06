@@ -8,3 +8,7 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Product writes go through admin server functions in src/lib/admin.functions.ts gated by assertAdmin (admin-auth.server.ts); why: single swap point for real auth later.
+- Product images live in a private storage bucket served via /api/public/img/$; why: workspace blocks public buckets.
+- Categories, badges, WhatsApp number live in src/lib/config.ts; why: easy to edit without DB changes.
