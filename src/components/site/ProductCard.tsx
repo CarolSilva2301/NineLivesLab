@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Check, MessageCircle, ShoppingCart } from "lucide-react";
+import { MessageCircle, ShoppingCart } from "lucide-react";
 import { BADGES, formatPrice, productWhatsapp } from "@/lib/config";
 import type { Product } from "@/lib/products";
 import { cart } from "@/lib/cart";
@@ -33,7 +33,7 @@ export function ProductCard({ p, onOpen }: { p: Product; onOpen: (p: Product) =>
         </div>
         <button onClick={add}
           className="mt-2 flex items-center justify-center gap-1.5 rounded-lg bg-primary py-2 text-xs font-bold text-primary-foreground transition hover:opacity-90 md:text-sm">
-          {added ? <><Check className="h-4 w-4" /> Adicionado ao carrinho ✓</> : <><ShoppingCart className="h-4 w-4" /> Adicionar ao carrinho</>}
+          {added ? "Adicionado ao carrinho ✓" : <><ShoppingCart className="h-4 w-4" /> Adicionar ao carrinho</>}
         </button>
         <a href={productWhatsapp(p)} target="_blank" rel="noreferrer"
           className="mt-1.5 flex items-center justify-center gap-1.5 rounded-lg bg-whatsapp py-2 text-xs font-bold text-whatsapp-foreground transition hover:opacity-90 md:text-sm">
