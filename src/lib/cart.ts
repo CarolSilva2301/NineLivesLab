@@ -21,11 +21,11 @@ function set(next: CartItem[]) {
 }
 
 export const cart = {
-  add(p: Product) {
+  add(p: Product, n = 1) {
     load();
     const ex = items.find((i) => i.id === p.id);
-    if (ex) set(items.map((i) => (i.id === p.id ? { ...i, qty: i.qty + 1 } : i)));
-    else set([...items, { id: p.id, name: p.name, price: Number(p.promo_price ?? p.price), image_url: p.image_url, qty: 1 }]);
+    if (ex) set(items.map((i) => (i.id === p.id ? { ...i, qty: i.qty + n } : i)));
+    else set([...items, { id: p.id, name: p.name, price: Number(p.promo_price ?? p.price), image_url: p.image_url, qty: n }]);
   },
   inc(id: string) { set(items.map((i) => (i.id === id ? { ...i, qty: i.qty + 1 } : i))); },
   dec(id: string) { set(items.flatMap((i) => (i.id !== id ? [i] : i.qty > 1 ? [{ ...i, qty: i.qty - 1 }] : []))); },
