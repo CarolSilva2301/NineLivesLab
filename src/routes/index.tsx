@@ -73,6 +73,7 @@ function Home() {
   const { data } = useSuspenseQuery(productsQuery);
   const featured = data.filter((p) => p.badge === "destaque").slice(0, 8);
   const news = data.filter((p) => p.badge === "novo").slice(0, 8);
+  const natal = data.filter((p) => p.category === "Natal").slice(0, 6);
   return (
     <SiteLayout>
       <HeroCarousel />
@@ -81,6 +82,19 @@ function Home() {
         <DeptCard to="/figures" img="/images/figure.jpg" emoji="🎭" title="FIGURES" text="Figures para colecionar, presentear e decorar." cta="VER FIGURES" />
         <DeptCard to="/filamento" img="/images/filamento.jpg" emoji="🧩" title="FILAMENTO 3D" text="Peças funcionais e decorativas produzidas em impressão 3D." cta="VER PEÇAS" />
       </section>
+
+      {natal.length > 0 && (
+        <Section title="🎄 Especial de Natal">
+          <ProductGrid items={natal} />
+          <div className="mt-6 text-center">
+            <Link to="/filamento"
+              search={{ categoria: "Natal" }}
+              className="inline-flex items-center gap-2 rounded-lg border border-gold/40 bg-card px-5 py-2.5 text-sm font-semibold text-gold transition hover:border-gold">
+              Ver produtos de Natal <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </Section>
+      )}
 
       {featured.length > 0 && <Section title="🔥 DESTAQUES"><ProductGrid items={featured} /></Section>}
       {news.length > 0 && <Section title="✨ NOVIDADES"><ProductGrid items={news} /></Section>}
