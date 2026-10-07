@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useState, type ReactNode } from "react";
 import { Menu, Search, X, MessageCircle, Instagram } from "lucide-react";
 import { SITE_CONFIG, whatsappLink } from "@/lib/config";
+import { CartButton } from "./CartButton";
 
 const nav = [
   { to: "/", label: "Home" },
@@ -45,6 +46,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
           <div className="flex items-center gap-1">
             <Link to="/figures" aria-label="Pesquisar" className="rounded-full p-2 hover:bg-secondary"><Search className="h-5 w-5" /></Link>
             <a href={whatsappLink()} target="_blank" rel="noreferrer" aria-label="WhatsApp" className="rounded-full p-2 text-whatsapp hover:bg-secondary"><MessageCircle className="h-5 w-5" /></a>
+            <CartButton />
             <button onClick={() => setOpen(!open)} className="rounded-full p-2 hover:bg-secondary md:hidden" aria-label="Menu">
               {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
