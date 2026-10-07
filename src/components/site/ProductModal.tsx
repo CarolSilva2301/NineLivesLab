@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
-import { MessageCircle } from "lucide-react";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { MessageCircle, Minus, Plus, ShoppingCart } from "lucide-react";
+import { cart } from "@/lib/cart";
+import { Dialog, DialogClose, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { BADGES, STATUS, TYPE_LABEL, formatPrice, productWhatsapp, type ProductType } from "@/lib/config";
 import type { Product } from "@/lib/products";
 
 export function ProductModal({ p, onClose }: { p: Product | null; onClose: () => void }) {
   const [img, setImg] = useState<string | null>(null);
-  useEffect(() => setImg(p?.image_url ?? null), [p]);
+  const [qty, setQty] = useState(1);
+  const [added, setAdded] = useState(false);
+  useEffect(() => { setImg(p?.image_url ?? null); setQty(1); setAdded(false); }, [p]);
   if (!p) return null;
   const images = [p.image_url, ...p.extra_images].filter(Boolean) as string[];
   const rows: [string, string][] = [
@@ -44,10 +47,25 @@ export function ProductModal({ p, onClose }: { p: Product | null; onClose: () =>
                 <div key={k} className="flex justify-between gap-4 px-3 py-2"><dt className="text-muted-foreground">{k}</dt><dd className="text-right">{v}</dd></div>
               ))}
             </dl>
-            <a href={productWhatsapp(p)} target="_blank" rel="noreferrer"
-              className="mt-auto flex items-center justify-center gap-2 rounded-xl bg-whatsapp py-4 font-bold text-whatsapp-foreground shadow-glow transition hover:opacity-90">
-              <MessageCircle className="h-5 w-5" /> PEDIR PELO WHATSAPP
-            </a>
+            <div className="mt-auto flex flex-col gap-3">
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-muted-foreground">Quantidade</span>
+                <div className="flex items-center rounded-lg border">
+                  <button onClick={() => setQty((q) => Math.max(1, q - 1))} aria-label="Diminuir" className="grid h-11 w-11 place-items-center hover:bg-secondary"><Minus className="h-4 w-4" /></button>
+                  <span className="w-10 text-center font-semibold">{qty}</span>
+                  <button onClick={() => setQty((q) => q + 1)} aria-label="Aumentar" className="grid h-11 w-11 place-items-center hover:bg-secondary"><Plus className="h-4 w-4" /></button>
+                </div>
+              </div>
+              <button onClick={() => { cart.add(p, qty); setAdded(true); setTimeout(() => setAdded(false), 1800); }}
+                className="flex items-center justify-center gap-2 rounded-xl bg-primary py-4 font-bold text-primary-foreground shadow-glow transition hover:opacity-90">
+                {added ? "Produto adicionado ao carrinho ✓" : <><ShoppingCart className="h-5 w-5" /> Adicionar ao carrinho</>}
+              </button>
+              <a href={productWhatsapp(p)} target="_blank" rel="noreferrer"
+                className="flex items-center justify-center gap-2 rounded-xl border border-whatsapp py-3.5 font-bold text-whatsapp transition hover:bg-whatsapp/10">
+                <MessageCircle className="h-5 w-5" /> Falar pelo WhatsApp
+              </a>
+              <DialogClose className="py-2 text-sm text-muted-foreground transition hover:text-foreground">← Voltar ao catálogo</DialogClose>
+            </div>
           </div>
         </div>
       </DialogContent>
