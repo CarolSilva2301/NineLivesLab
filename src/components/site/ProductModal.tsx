@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { MessageCircle, Minus, Plus, ShoppingCart } from "lucide-react";
 import { cart } from "@/lib/cart";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { BADGES, STATUS, TYPE_LABEL, formatPrice, productWhatsapp, type ProductType } from "@/lib/config";
 import type { Product } from "@/lib/products";
 
@@ -64,6 +64,7 @@ export function ProductModal({ p, onClose }: { p: Product | null; onClose: () =>
                 className="flex items-center justify-center gap-2 rounded-xl border border-whatsapp py-3.5 font-bold text-whatsapp transition hover:bg-whatsapp/10">
                 <MessageCircle className="h-5 w-5" /> Falar pelo WhatsApp
               </a>
+              <DialogClose className="py-2 text-sm text-muted-foreground transition hover:text-foreground">← Voltar ao catálogo</DialogClose>
             </div>
           </div>
         </div>
