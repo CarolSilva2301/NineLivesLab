@@ -29,6 +29,13 @@
       "when": 1791460590749,
       "tag": "0003_expand_order_number_sequence",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1791462362666,
+      "tag": "0004_order_management_internal_notes",
+      "breakpoints": true
     }
   ]
 }
