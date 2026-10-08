@@ -162,6 +162,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      next_order_number: { Args: never; Returns: string }
       register_order: {
         Args: { p_customer: Json; p_items: Json; p_request_id: string }
         Returns: Json
