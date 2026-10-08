@@ -14,6 +14,92 @@ export type Database = {
   }
   public: {
     Tables: {
+      order_items: {
+        Row: {
+          created_at: string
+          id: string
+          order_id: string
+          product_id: string
+          product_name: string
+          quantity: number
+          subtotal: number
+          unit_price: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          order_id: string
+          product_id: string
+          product_name: string
+          quantity: number
+          subtotal: number
+          unit_price: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          order_id?: string
+          product_id?: string
+          product_name?: string
+          quantity?: number
+          subtotal?: number
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          city: string
+          created_at: string
+          customer_name: string
+          email: string | null
+          id: string
+          notes: string
+          order_number: string
+          request_fingerprint: string
+          request_id: string
+          status: string
+          total: number
+          whatsapp: string
+        }
+        Insert: {
+          city: string
+          created_at?: string
+          customer_name: string
+          email?: string | null
+          id?: string
+          notes?: string
+          order_number?: string
+          request_fingerprint: string
+          request_id: string
+          status?: string
+          total: number
+          whatsapp: string
+        }
+        Update: {
+          city?: string
+          created_at?: string
+          customer_name?: string
+          email?: string | null
+          id?: string
+          notes?: string
+          order_number?: string
+          request_fingerprint?: string
+          request_id?: string
+          status?: string
+          total?: number
+          whatsapp?: string
+        }
+        Relationships: []
+      }
       products: {
         Row: {
           active: boolean
@@ -76,7 +162,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      register_order: {
+        Args: { p_customer: Json; p_items: Json; p_request_id: string }
+        Returns: Json
+      }
     }
     Enums: {
       [_ in never]: never
