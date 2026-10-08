@@ -16,6 +16,8 @@ import { Route as FiguresRouteImport } from './routes/figures'
 import { Route as FilamentoRouteImport } from './routes/filamento'
 import { Route as FinalizarRouteImport } from './routes/finalizar'
 import { Route as SobreRouteImport } from './routes/sobre'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminPedidosRouteImport } from './routes/admin.pedidos'
 import { Route as ApiPublicImgSplatRouteImport } from './routes/api/public/img.$'
 
 const IndexRoute = IndexRouteImport.update({
@@ -53,6 +55,16 @@ const SobreRoute = SobreRouteImport.update({
   path: '/sobre',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPedidosRoute = AdminPedidosRouteImport.update({
+  id: '/pedidos',
+  path: '/pedidos',
+  getParentRoute: () => AdminRoute,
+} as any)
 const ApiPublicImgSplatRoute = ApiPublicImgSplatRouteImport.update({
   id: '/api/public/img/$',
   path: '/api/public/img/$',
@@ -61,33 +73,38 @@ const ApiPublicImgSplatRoute = ApiPublicImgSplatRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/contato': typeof ContatoRoute
   '/figures': typeof FiguresRoute
   '/filamento': typeof FilamentoRoute
   '/finalizar': typeof FinalizarRoute
   '/sobre': typeof SobreRoute
+  '/admin/pedidos': typeof AdminPedidosRoute
+  '/admin/': typeof AdminIndexRoute
   '/api/public/img/$': typeof ApiPublicImgSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
   '/contato': typeof ContatoRoute
   '/figures': typeof FiguresRoute
   '/filamento': typeof FilamentoRoute
   '/finalizar': typeof FinalizarRoute
   '/sobre': typeof SobreRoute
+  '/admin/pedidos': typeof AdminPedidosRoute
+  '/admin': typeof AdminIndexRoute
   '/api/public/img/$': typeof ApiPublicImgSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/contato': typeof ContatoRoute
   '/figures': typeof FiguresRoute
   '/filamento': typeof FilamentoRoute
   '/finalizar': typeof FinalizarRoute
   '/sobre': typeof SobreRoute
+  '/admin/pedidos': typeof AdminPedidosRoute
+  '/admin/': typeof AdminIndexRoute
   '/api/public/img/$': typeof ApiPublicImgSplatRoute
 }
 export interface FileRouteTypes {
@@ -100,16 +117,19 @@ export interface FileRouteTypes {
     | '/filamento'
     | '/finalizar'
     | '/sobre'
+    | '/admin/pedidos'
+    | '/admin/'
     | '/api/public/img/$'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/admin'
     | '/contato'
     | '/figures'
     | '/filamento'
     | '/finalizar'
     | '/sobre'
+    | '/admin/pedidos'
+    | '/admin'
     | '/api/public/img/$'
   id:
     | '__root__'
@@ -120,12 +140,14 @@ export interface FileRouteTypes {
     | '/filamento'
     | '/finalizar'
     | '/sobre'
+    | '/admin/pedidos'
+    | '/admin/'
     | '/api/public/img/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRoute
+  AdminRoute: typeof AdminRouteWithChildren
   ContatoRoute: typeof ContatoRoute
   FiguresRoute: typeof FiguresRoute
   FilamentoRoute: typeof FilamentoRoute
@@ -185,6 +207,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SobreRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/pedidos': {
+      id: '/admin/pedidos'
+      path: '/pedidos'
+      fullPath: '/admin/pedidos'
+      preLoaderRoute: typeof AdminPedidosRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/api/public/img/$': {
       id: '/api/public/img/$'
       path: '/api/public/img/$'
@@ -195,9 +231,21 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdminRouteChildren {
+  AdminPedidosRoute: typeof AdminPedidosRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminPedidosRoute: AdminPedidosRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRoute: AdminRoute,
+  AdminRoute: AdminRouteWithChildren,
   ContatoRoute: ContatoRoute,
   FiguresRoute: FiguresRoute,
   FilamentoRoute: FilamentoRoute,

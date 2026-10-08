@@ -16,3 +16,5 @@
 - Order totals and WhatsApp messages use src/lib/checkout.ts and the centralized contact configuration; why: both purchase flows share testable calculations and contact routing.
 - Successful checkout renders confirmation only after the order-write result, with contact as a separate optional link; why: registering an order must not depend on external navigation.
 - Guest order creation uses a validated write-only server function and service-role-only atomic database function; why: private snapshots, authoritative prices, unique numbers and retry-safe writes without customer login.
+- Admin order operations use server-side assertAdmin before privileged access, with separate private internal notes and existing cascading item deletion; why: preserve current admin authentication and never expose orders publicly.
+- The admin parent renders Outlet with the existing product panel in its index and order management in its child route; why: preserve /admin while supporting /admin/pedidos.

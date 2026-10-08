@@ -36,6 +36,7 @@
   --color-gold: var(--gold);
   --color-whatsapp: var(--whatsapp);
   --color-whatsapp-foreground: var(--whatsapp-foreground);
+  --color-order-awaiting: var(--order-awaiting);
 }
 
 :root {
@@ -64,6 +65,7 @@
   --gold: oklch(0.8 0.13 85);
   --whatsapp: oklch(0.68 0.17 150);
   --whatsapp-foreground: oklch(0.13 0.005 60);
+  --order-awaiting: oklch(0.7 0.16 250);
   --gradient-hero: linear-gradient(90deg, oklch(0.13 0.005 60 / 0.95) 0%, oklch(0.13 0.005 60 / 0.6) 55%, oklch(0.13 0.005 60 / 0.1) 100%);
   --shadow-glow: 0 10px 40px -10px oklch(0.7 0.19 45 / 0.5);
 }
