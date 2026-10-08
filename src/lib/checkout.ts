@@ -3,6 +3,10 @@ import { formatPrice, whatsappLink } from "@/lib/config";
 
 export type CustomerDetails = { nome: string; whatsapp: string; cidade: string; email: string; obs: string };
 
+export function orderContactWhatsapp(orderNumber: string) {
+  return whatsappLink(`Olá! Acabei de realizar o pedido #${orderNumber} na Nine Lives Lab. Gostaria de falar sobre meu pedido. 😊`);
+}
+
 export function orderTotal(items: CartItem[]) {
   return items.reduce((sum, item) => sum + item.price * item.qty, 0);
 }

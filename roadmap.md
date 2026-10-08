@@ -4,3 +4,4 @@
 - [x] Test both flows, contacts and desktop/tablet/mobile layout.
 - [x] Persist orders and item snapshots atomically in existing Cloud, then include order number in WhatsApp.
 - [x] Verify private access, failure handling and persisted immediate/cart orders; no admin order screen.
+- [x] Replace automatic WhatsApp handoff with successful-order confirmation and optional contact; verify success and failure paths (16 tests passed).
