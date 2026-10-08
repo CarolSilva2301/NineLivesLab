@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { MessageCircle, ShoppingCart } from "lucide-react";
-import { BADGES, formatPrice, productWhatsapp } from "@/lib/config";
+import { useNavigate } from "@tanstack/react-router";
+import { ShoppingCart, Zap } from "lucide-react";
+import { BADGES, formatPrice } from "@/lib/config";
 import type { Product } from "@/lib/products";
 import { cart } from "@/lib/cart";
 
 export function ProductCard({ p, onOpen }: { p: Product; onOpen: (p: Product) => void }) {
+  const navigate = useNavigate();
   const [added, setAdded] = useState(false);
   const add = () => {
     cart.add(p);
@@ -31,14 +33,14 @@ export function ProductCard({ p, onOpen }: { p: Product; onOpen: (p: Product) =>
           <span className="font-display text-lg font-bold">{formatPrice(p.promo_price ?? p.price)}</span>
           {p.promo_price != null && <span className="text-xs text-muted-foreground line-through">{formatPrice(p.price)}</span>}
         </div>
-        <button onClick={add}
-          className="mt-2 flex items-center justify-center gap-1.5 rounded-lg bg-primary py-2 text-xs font-bold text-primary-foreground transition hover:opacity-90 md:text-sm">
-          {added ? "Adicionado ao carrinho ✓" : <><ShoppingCart className="h-4 w-4" /> Adicionar ao carrinho</>}
+        <button onClick={() => { cart.add(p); navigate({ to: "/finalizar" }); }}
+          className="mt-2 flex items-center justify-center gap-1.5 rounded-lg bg-primary py-2.5 text-xs font-bold text-primary-foreground shadow-glow transition hover:opacity-90 md:text-sm">
+          <Zap className="h-4 w-4" /> Comprar
         </button>
-        <a href={productWhatsapp(p)} target="_blank" rel="noreferrer"
-          className="mt-1.5 flex items-center justify-center gap-1.5 rounded-lg bg-whatsapp py-2 text-xs font-bold text-whatsapp-foreground transition hover:opacity-90 md:text-sm">
-          <MessageCircle className="h-4 w-4" /> WhatsApp
-        </a>
+        <button onClick={add}
+          className="mt-1.5 flex items-center justify-center gap-1.5 rounded-lg border border-primary/50 py-2 text-xs font-semibold text-primary transition hover:bg-primary/10 md:text-sm">
+          {added ? "Adicionado ✓" : <><ShoppingCart className="h-4 w-4 shrink-0" /> <span className="truncate">Adicionar ao carrinho</span></>}
+        </button>
       </div>
     </div>
   );
