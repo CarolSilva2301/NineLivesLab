@@ -1,9 +1,9 @@
 // Configurações fáceis de alterar
 export const SITE_CONFIG = {
   brand: "Nine Lives Lab",
-  whatsappNumber: "5511999999999", // DDI + DDD + número, só dígitos
-  instagramUrl: "https://instagram.com/nineliveslab",
-  instagramHandle: "@nineliveslab",
+  whatsappNumber: "5585996313296", // DDI + DDD + número, só dígitos
+  instagramUrl: "https://instagram.com/ninelives.3d",
+  instagramHandle: "@ninelives.3d",
 };
 
 export type ProductType = "figure" | "filamento";
