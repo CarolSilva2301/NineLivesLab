@@ -5,6 +5,8 @@ import { z } from "zod";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { buyNow, useCart, type CartItem } from "@/lib/cart";
 import { formatPrice } from "@/lib/config";
+import { orderTotal, orderWhatsapp } from "@/lib/checkout";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/finalizar")({
   head: () => ({
@@ -17,7 +19,7 @@ export const Route = createFileRoute("/finalizar")({
       { name: "twitter:card", content: "summary" },
     ],
   }),
-  validateSearch: (s: Record<string, unknown>): { modo?: "comprar" } => (s.modo === "comprar" ? { modo: "comprar" } : {}),
+  validateSearch: (s: Record<string, unknown>): { modo?: "comprar" } => (s["modo"] === "comprar" ? { modo: "comprar" } : {}),
   component: Checkout,
 });
 
@@ -38,7 +40,7 @@ function Checkout() {
   const [buyItems, setBuyItems] = useState<CartItem[]>([]);
   useEffect(() => { if (modo === "comprar") setBuyItems(buyNow.get()); }, [modo]);
   const items = modo === "comprar" ? buyItems : cartItems;
-  const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
+  const subtotal = orderTotal(items);
   const [form, setForm] = useState<Form>({ nome: "", whatsapp: "", cidade: "", email: "", obs: "" });
   const [errors, setErrors] = useState<Partial<Record<keyof Form, string>>>({});
   const [ready, setReady] = useState(false);
@@ -46,6 +48,7 @@ function Checkout() {
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (items.length === 0) return;
     const r = schema.safeParse(form);
     if (!r.success) {
       const errs: Partial<Record<keyof Form, string>> = {};
@@ -55,6 +58,7 @@ function Checkout() {
       return;
     }
     setErrors({});
+    window.open(orderWhatsapp(items, r.data), "_blank", "noopener,noreferrer");
     setReady(true);
   };
 
@@ -64,7 +68,7 @@ function Checkout() {
     <SiteLayout>
       <section className="mx-auto max-w-6xl px-4 py-10">
         <div className="flex flex-wrap gap-4 text-sm">
-          <button onClick={openCart} className="inline-flex items-center gap-1 text-muted-foreground hover:text-primary"><ArrowLeft className="h-4 w-4" /> Voltar ao carrinho</button>
+          <Button variant="link" onClick={openCart} className="h-auto gap-1 p-0 text-muted-foreground hover:text-primary"><ArrowLeft className="h-4 w-4" /> Voltar ao carrinho</Button>
           <Link to="/figures" className="text-muted-foreground hover:text-primary">Continuar comprando</Link>
         </div>
         <h1 className="mt-4 text-3xl font-bold md:text-4xl">Finalizar <span className="text-primary">pedido</span></h1>
@@ -87,11 +91,11 @@ function Checkout() {
                       {i.image_url && <img src={i.image_url} alt={i.name} className="h-full w-full object-cover" />}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="line-clamp-2 text-sm font-semibold">{i.name}</p>
-                      <p className="text-xs text-muted-foreground">Qtd: {i.qty} · Unitário: {formatPrice(i.price)}</p>
-                      <p className="text-xs text-muted-foreground">Subtotal: {formatPrice(i.price * i.qty)}</p>
+                      <p className="break-words text-sm font-semibold">{i.name}</p>
+                      <p className="text-xs text-muted-foreground">Quantidade: {i.qty}</p>
+                      <p className="text-xs text-muted-foreground">Preço unitário: {formatPrice(i.price)}</p>
+                      <p className="text-sm font-bold">Subtotal: {formatPrice(i.price * i.qty)}</p>
                     </div>
-                    <span className="shrink-0 font-display font-bold">{formatPrice(i.price * i.qty)}</span>
                   </li>
                 ))}
               </ul>
@@ -108,10 +112,10 @@ function Checkout() {
               <Field label="E-mail (opcional)" error={errors.email}><input className={input} type="email" value={form.email} onChange={upd("email")} maxLength={255} autoComplete="email" /></Field>
               <Field label="Observação / detalhes do pedido (opcional)"><textarea className={input} rows={4} value={form.obs} onChange={upd("obs")} maxLength={1000} /></Field>
               <p className="rounded-lg border border-dashed p-3 text-xs text-muted-foreground">Você não será cobrado agora. Após enviar o pedido, entraremos em contato pelo WhatsApp para confirmar disponibilidade, prazo, entrega e forma de pagamento.</p>
-              <button type="submit" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 py-4 font-bold text-primary-foreground shadow-glow">
+              <Button type="submit" className="h-auto w-full whitespace-normal rounded-xl px-4 py-4 font-bold shadow-glow">
                 <MessageCircle className="h-5 w-5" /> Enviar pedido pelo WhatsApp
-              </button>
-              {ready && <p className="text-center text-sm text-primary">Dados conferidos! O envio pelo WhatsApp será ativado na próxima etapa.</p>}
+              </Button>
+              {ready && <p className="text-center text-sm text-primary">Pedido preparado! Confirme o envio no WhatsApp.</p>}
             </form>
 
           </div>

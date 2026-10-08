@@ -66,7 +66,7 @@ export function CartButton() {
                   <span className="text-muted-foreground">Subtotal:</span>
                   <span className="font-display text-xl font-bold text-primary">{formatPrice(subtotal)}</span>
                 </div>
-                <Link to="/finalizar" onClick={() => setOpen(false)} className="block w-full rounded-xl bg-primary px-6 py-3 text-center font-bold text-primary-foreground shadow-glow">Finalizar pedido</Link>
+                <Link to="/finalizar" search={{}} onClick={() => setOpen(false)} className="block w-full rounded-xl bg-primary px-6 py-3 text-center font-bold text-primary-foreground shadow-glow">Finalizar pedido</Link>
               </div>
             </>
           )}
