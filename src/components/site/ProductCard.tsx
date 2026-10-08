@@ -3,7 +3,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { ShoppingCart, Zap } from "lucide-react";
 import { BADGES, formatPrice } from "@/lib/config";
 import type { Product } from "@/lib/products";
-import { cart } from "@/lib/cart";
+import { buyNow, cart } from "@/lib/cart";
 
 export function ProductCard({ p, onOpen }: { p: Product; onOpen: (p: Product) => void }) {
   const navigate = useNavigate();
@@ -33,7 +33,7 @@ export function ProductCard({ p, onOpen }: { p: Product; onOpen: (p: Product) =>
           <span className="font-display text-lg font-bold">{formatPrice(p.promo_price ?? p.price)}</span>
           {p.promo_price != null && <span className="text-xs text-muted-foreground line-through">{formatPrice(p.price)}</span>}
         </div>
-        <button onClick={() => { cart.add(p); navigate({ to: "/finalizar" }); }}
+        <button onClick={() => { buyNow.start(p); navigate({ to: "/finalizar", search: { modo: "comprar" } }); }}
           className="mt-2 flex items-center justify-center gap-1.5 rounded-lg bg-primary py-2.5 text-xs font-bold text-primary-foreground shadow-glow transition hover:opacity-90 md:text-sm">
           <Zap className="h-4 w-4" /> Comprar
         </button>

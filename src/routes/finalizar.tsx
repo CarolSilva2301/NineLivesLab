@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowLeft, MessageCircle, ShoppingCart } from "lucide-react";
 import { z } from "zod";
 import { SiteLayout } from "@/components/site/SiteLayout";
-import { useCart } from "@/lib/cart";
+import { buyNow, useCart, type CartItem } from "@/lib/cart";
 import { formatPrice } from "@/lib/config";
 
 export const Route = createFileRoute("/finalizar")({
@@ -17,6 +17,7 @@ export const Route = createFileRoute("/finalizar")({
       { name: "twitter:card", content: "summary" },
     ],
   }),
+  validateSearch: (s: Record<string, unknown>): { modo?: "comprar" } => (s.modo === "comprar" ? { modo: "comprar" } : {}),
   component: Checkout,
 });
 
@@ -32,7 +33,11 @@ type Form = z.infer<typeof schema>;
 const input = "w-full rounded-lg border bg-card px-3 py-2.5 text-sm outline-none focus:border-primary";
 
 function Checkout() {
-  const items = useCart();
+  const { modo } = Route.useSearch();
+  const cartItems = useCart();
+  const [buyItems, setBuyItems] = useState<CartItem[]>([]);
+  useEffect(() => { if (modo === "comprar") setBuyItems(buyNow.get()); }, [modo]);
+  const items = modo === "comprar" ? buyItems : cartItems;
   const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
   const [form, setForm] = useState<Form>({ nome: "", whatsapp: "", cidade: "", email: "", obs: "" });
   const [errors, setErrors] = useState<Partial<Record<keyof Form, string>>>({});
@@ -72,8 +77,30 @@ function Checkout() {
             <Link to="/figures" className="mt-4 rounded-xl bg-primary px-6 py-3 font-bold text-primary-foreground shadow-glow">Ver produtos</Link>
           </div>
         ) : (
-          <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_400px]">
-            <form onSubmit={submit} noValidate className="space-y-4 rounded-2xl border bg-card/50 p-5 md:p-6">
+          <div className="mx-auto mt-8 grid max-w-3xl gap-6">
+            <aside className="min-w-0 rounded-2xl border bg-card/50 p-5 md:p-6">
+              <h2 className="font-display text-xl font-bold">Resumo do pedido</h2>
+              <ul className="mt-4 divide-y">
+                {items.map((i) => (
+                  <li key={i.id} className="flex gap-3 py-3">
+                    <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-muted">
+                      {i.image_url && <img src={i.image_url} alt={i.name} className="h-full w-full object-cover" />}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="line-clamp-2 text-sm font-semibold">{i.name}</p>
+                      <p className="text-xs text-muted-foreground">Qtd: {i.qty} · Unitário: {formatPrice(i.price)}</p>
+                      <p className="text-xs text-muted-foreground">Subtotal: {formatPrice(i.price * i.qty)}</p>
+                    </div>
+                    <span className="shrink-0 font-display font-bold">{formatPrice(i.price * i.qty)}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-2 flex items-center justify-between border-t pt-4">
+                <span className="text-muted-foreground">Total do pedido:</span>
+                <span className="font-display text-xl font-bold text-primary">{formatPrice(subtotal)}</span>
+              </div>
+            </aside>
+            <form onSubmit={submit} noValidate className="min-w-0 space-y-4 rounded-2xl border bg-card/50 p-5 md:p-6">
               <h2 className="font-display text-xl font-bold">Seus dados</h2>
               <Field label="Nome completo *" error={errors.nome}><input className={input} value={form.nome} onChange={upd("nome")} maxLength={100} autoComplete="name" /></Field>
               <Field label="WhatsApp *" error={errors.whatsapp}><input className={input} value={form.whatsapp} onChange={upd("whatsapp")} maxLength={30} inputMode="tel" placeholder="(11) 99999-9999" autoComplete="tel" /></Field>
@@ -87,27 +114,6 @@ function Checkout() {
               {ready && <p className="text-center text-sm text-primary">Dados conferidos! O envio pelo WhatsApp será ativado na próxima etapa.</p>}
             </form>
 
-            <aside className="h-fit rounded-2xl border bg-card/50 p-5 md:p-6">
-              <h2 className="font-display text-xl font-bold">Resumo do pedido</h2>
-              <ul className="mt-4 divide-y">
-                {items.map((i) => (
-                  <li key={i.id} className="flex gap-3 py-3">
-                    <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-muted">
-                      {i.image_url && <img src={i.image_url} alt={i.name} className="h-full w-full object-cover" />}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="line-clamp-2 text-sm font-semibold">{i.name}</p>
-                      <p className="text-xs text-muted-foreground">{i.qty} × {formatPrice(i.price)}</p>
-                    </div>
-                    <span className="shrink-0 font-display font-bold">{formatPrice(i.price * i.qty)}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-2 flex items-center justify-between border-t pt-4">
-                <span className="text-muted-foreground">Subtotal:</span>
-                <span className="font-display text-xl font-bold text-primary">{formatPrice(subtotal)}</span>
-              </div>
-            </aside>
           </div>
         )}
       </section>

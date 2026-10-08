@@ -39,3 +39,15 @@ export function useCart() {
     () => EMPTY,
   );
 }
+
+// Compra imediata: sessão temporária, independente do carrinho principal
+const BUY_KEY = "nll-buynow";
+export const buyNow = {
+  start(p: Product) {
+    const item: CartItem = { id: p.id, name: p.name, price: Number(p.promo_price ?? p.price), image_url: p.image_url, qty: 1 };
+    try { sessionStorage.setItem(BUY_KEY, JSON.stringify([item])); } catch { /* ignore */ }
+  },
+  get(): CartItem[] {
+    try { return JSON.parse(sessionStorage.getItem(BUY_KEY) || "[]"); } catch { return []; }
+  },
+};
