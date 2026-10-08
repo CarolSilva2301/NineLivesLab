@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 const { saveOrder } = vi.hoisted(() => ({ saveOrder: vi.fn() }));
 vi.mock("@tanstack/react-start", () => ({ useServerFn: () => saveOrder }));
 vi.mock("@tanstack/react-router", () => ({
-  createFileRoute: () => (options: { component: React.ComponentType }) => ({ ...options, useSearch: () => ({}) }),
+  createFileRoute: () => (options: { component: React.ComponentType }) => ({ options, useSearch: () => ({}) }),
   Link: ({ children }: { children: React.ReactNode }) => <a href="/figures">{children}</a>,
 }));
 vi.mock("@/components/site/SiteLayout", () => ({ SiteLayout: ({ children }: { children: React.ReactNode }) => <>{children}</> }));
@@ -16,7 +16,9 @@ vi.mock("@/lib/cart", () => ({
 import { Route } from "@/routes/finalizar";
 
 function submit() {
-  render(<Route.component />);
+  const Checkout = Route.options.component;
+  if (!Checkout) throw new Error("Missing checkout component");
+  render(<Checkout />);
   fireEvent.change(screen.getByLabelText("Nome completo *"), { target: { value: "Maria" } });
   fireEvent.change(screen.getByLabelText("WhatsApp *"), { target: { value: "85999999999" } });
   fireEvent.change(screen.getByLabelText("Cidade *"), { target: { value: "Fortaleza" } });
