@@ -10,6 +10,8 @@ export const Route = createFileRoute("/filamento")({
       { name: "description", content: "Peças funcionais, decorativas e criativas produzidas em impressão 3D." },
       { property: "og:title", content: "Filamento 3D | Nine Lives Lab" },
       { property: "og:description", content: "Utilidades, decoração, setup gamer e Natal em impressão 3D." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   loader: ({ context }) => context.queryClient.ensureQueryData(productsQuery),

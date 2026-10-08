@@ -17,6 +17,8 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Figures, decoração e peças em 3D para deixar seu Natal ainda mais especial. Peça pelo WhatsApp." },
       { property: "og:title", content: "Nine Lives Lab — Natal em impressão 3D" },
       { property: "og:description", content: "Figures colecionáveis e peças funcionais impressas em 3D." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   loader: ({ context }) => context.queryClient.ensureQueryData(productsQuery),

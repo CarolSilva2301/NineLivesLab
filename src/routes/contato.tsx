@@ -10,6 +10,8 @@ export const Route = createFileRoute("/contato")({
       { name: "description", content: "Fale com a Nine Lives Lab pelo WhatsApp ou Instagram." },
       { property: "og:title", content: "Fale conosco | Nine Lives Lab" },
       { property: "og:description", content: "WhatsApp e Instagram da Nine Lives Lab." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: () => (

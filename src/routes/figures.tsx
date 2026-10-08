@@ -10,6 +10,8 @@ export const Route = createFileRoute("/figures")({
       { name: "description", content: "Figures impressas em 3D: games, anime, filmes, terror e geek." },
       { property: "og:title", content: "Figures | Nine Lives Lab" },
       { property: "og:description", content: "Encontre seu próximo personagem favorito." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   loader: ({ context }) => context.queryClient.ensureQueryData(productsQuery),

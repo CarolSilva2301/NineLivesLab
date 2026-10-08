@@ -8,6 +8,8 @@ export const Route = createFileRoute("/sobre")({
       { name: "description", content: "Impressão 3D, criatividade e cultura geek." },
       { property: "og:title", content: "Sobre a Nine Lives Lab" },
       { property: "og:description", content: "Transformamos ideias em figures e peças através da impressão 3D." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: () => (
