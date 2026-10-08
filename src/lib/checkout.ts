@@ -7,9 +7,10 @@ export function orderTotal(items: CartItem[]) {
   return items.reduce((sum, item) => sum + item.price * item.qty, 0);
 }
 
-export function orderWhatsapp(items: CartItem[], customer: CustomerDetails) {
+export function orderWhatsapp(items: CartItem[], customer: CustomerDetails, orderNumber?: string) {
   return whatsappLink([
     "Olá! Quero fazer um pedido na Nine Lives Lab.",
+    ...(orderNumber ? [`Pedido: #${orderNumber}`] : []),
     "",
     ...items.map((item) => `${item.name}\nQuantidade: ${item.qty}\nPreço unitário: ${formatPrice(item.price)}\nSubtotal: ${formatPrice(item.price * item.qty)}\n`),
     `Total do pedido: ${formatPrice(orderTotal(items))}`,

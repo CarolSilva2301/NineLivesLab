@@ -14,3 +14,4 @@
 - Categories, badges, WhatsApp number live in src/lib/config.ts; why: easy to edit without DB changes.
 - Immediate purchases use sessionStorage and an explicit checkout search mode, separate from the persisted cart; why: checkout and reload never merge the two flows.
 - Order totals and WhatsApp messages use src/lib/checkout.ts and the centralized contact configuration; why: both purchase flows share testable calculations and contact routing.
+- Guest order creation uses a validated write-only server function and service-role-only atomic database function; why: private snapshots, authoritative prices, unique numbers and retry-safe writes without customer login.

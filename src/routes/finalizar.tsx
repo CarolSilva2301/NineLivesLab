@@ -1,12 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { ArrowLeft, MessageCircle, ShoppingCart } from "lucide-react";
-import { z } from "zod";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { buyNow, useCart, type CartItem } from "@/lib/cart";
 import { formatPrice } from "@/lib/config";
 import { orderTotal, orderWhatsapp } from "@/lib/checkout";
 import { Button } from "@/components/ui/button";
+import { customerSchema as schema } from "@/lib/order-schema";
+import { registerOrder } from "@/lib/orders.functions";
+import type { CustomerDetails } from "@/lib/checkout";
 
 export const Route = createFileRoute("/finalizar")({
   head: () => ({
@@ -23,14 +26,7 @@ export const Route = createFileRoute("/finalizar")({
   component: Checkout,
 });
 
-const schema = z.object({
-  nome: z.string().trim().min(1, "Informe seu nome completo").max(100),
-  whatsapp: z.string().trim().min(1, "Informe seu WhatsApp").max(30),
-  cidade: z.string().trim().min(1, "Informe sua cidade").max(100),
-  email: z.union([z.literal(""), z.string().trim().email("E-mail inválido").max(255)]),
-  obs: z.string().max(1000),
-});
-type Form = z.infer<typeof schema>;
+type Form = CustomerDetails;
 
 const input = "w-full rounded-lg border bg-card px-3 py-2.5 text-sm outline-none focus:border-primary";
 
@@ -44,10 +40,17 @@ function Checkout() {
   const [form, setForm] = useState<Form>({ nome: "", whatsapp: "", cidade: "", email: "", obs: "" });
   const [errors, setErrors] = useState<Partial<Record<keyof Form, string>>>({});
   const [ready, setReady] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState("");
+  const [orderNumber, setOrderNumber] = useState("");
+  const saveOrder = useServerFn(registerOrder);
+  const pending = useRef(false);
+  const attempt = useRef<{ fingerprint: string; id: string } | null>(null);
   const upd = (k: keyof Form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (pending.current) return;
     if (items.length === 0) return;
     const r = schema.safeParse(form);
     if (!r.success) {
@@ -58,8 +61,30 @@ function Checkout() {
       return;
     }
     setErrors({});
-    window.open(orderWhatsapp(items, r.data), "_blank", "noopener,noreferrer");
-    setReady(true);
+    setSaveError("");
+    setReady(false);
+    pending.current = true;
+    setSaving(true);
+    const popup = window.open("", "_blank");
+    if (popup) popup.opener = null;
+    try {
+      const selected = items.map((item) => ({ product_id: item.id, quantity: item.qty, unit_price: item.price }));
+      const fingerprint = JSON.stringify({ customer: r.data, selected });
+      if (attempt.current?.fingerprint !== fingerprint) attempt.current = { fingerprint, id: crypto.randomUUID() };
+      const result = await saveOrder({ data: { requestId: attempt.current.id, customer: r.data, items: selected } });
+      if (!result.ok) throw new Error("Order not saved");
+      setOrderNumber(result.orderNumber);
+      setReady(true);
+      const url = orderWhatsapp(items, r.data, result.orderNumber);
+      if (popup) popup.location.href = url;
+      else window.location.assign(url);
+    } catch {
+      popup?.close();
+      setSaveError("Não conseguimos registrar seu pedido. Verifique sua conexão e tente novamente.");
+    } finally {
+      pending.current = false;
+      setSaving(false);
+    }
   };
 
   const openCart = () => window.dispatchEvent(new Event("nll-open-cart"));
@@ -112,10 +137,11 @@ function Checkout() {
               <Field label="E-mail (opcional)" error={errors.email}><input className={input} type="email" value={form.email} onChange={upd("email")} maxLength={255} autoComplete="email" /></Field>
               <Field label="Observação / detalhes do pedido (opcional)"><textarea className={input} rows={4} value={form.obs} onChange={upd("obs")} maxLength={1000} /></Field>
               <p className="rounded-lg border border-dashed p-3 text-xs text-muted-foreground">Você não será cobrado agora. Após enviar o pedido, entraremos em contato pelo WhatsApp para confirmar disponibilidade, prazo, entrega e forma de pagamento.</p>
-              <Button type="submit" className="h-auto w-full whitespace-normal rounded-xl px-4 py-4 font-bold shadow-glow">
+              <Button type="submit" disabled={saving} aria-busy={saving} className="h-auto w-full whitespace-normal rounded-xl px-4 py-4 font-bold shadow-glow">
                 <MessageCircle className="h-5 w-5" /> Enviar pedido pelo WhatsApp
               </Button>
-              {ready && <p className="text-center text-sm text-primary">Pedido preparado! Confirme o envio no WhatsApp.</p>}
+              {saveError && <p role="alert" className="text-center text-sm text-destructive">{saveError}</p>}
+              {ready && <p className="text-center text-sm text-primary">Pedido #{orderNumber} registrado! Confirme o envio no WhatsApp.</p>}
             </form>
 
           </div>
