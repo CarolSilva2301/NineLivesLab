@@ -14,6 +14,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as ContatoRouteImport } from './routes/contato'
 import { Route as FiguresRouteImport } from './routes/figures'
 import { Route as FilamentoRouteImport } from './routes/filamento'
+import { Route as FinalizarRouteImport } from './routes/finalizar'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as ApiPublicImgSplatRouteImport } from './routes/api/public/img.$'
 
@@ -42,6 +43,11 @@ const FilamentoRoute = FilamentoRouteImport.update({
   path: '/filamento',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FinalizarRoute = FinalizarRouteImport.update({
+  id: '/finalizar',
+  path: '/finalizar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SobreRoute = SobreRouteImport.update({
   id: '/sobre',
   path: '/sobre',
@@ -59,6 +65,7 @@ export interface FileRoutesByFullPath {
   '/contato': typeof ContatoRoute
   '/figures': typeof FiguresRoute
   '/filamento': typeof FilamentoRoute
+  '/finalizar': typeof FinalizarRoute
   '/sobre': typeof SobreRoute
   '/api/public/img/$': typeof ApiPublicImgSplatRoute
 }
@@ -68,6 +75,7 @@ export interface FileRoutesByTo {
   '/contato': typeof ContatoRoute
   '/figures': typeof FiguresRoute
   '/filamento': typeof FilamentoRoute
+  '/finalizar': typeof FinalizarRoute
   '/sobre': typeof SobreRoute
   '/api/public/img/$': typeof ApiPublicImgSplatRoute
 }
@@ -78,6 +86,7 @@ export interface FileRoutesById {
   '/contato': typeof ContatoRoute
   '/figures': typeof FiguresRoute
   '/filamento': typeof FilamentoRoute
+  '/finalizar': typeof FinalizarRoute
   '/sobre': typeof SobreRoute
   '/api/public/img/$': typeof ApiPublicImgSplatRoute
 }
@@ -89,6 +98,7 @@ export interface FileRouteTypes {
     | '/contato'
     | '/figures'
     | '/filamento'
+    | '/finalizar'
     | '/sobre'
     | '/api/public/img/$'
   fileRoutesByTo: FileRoutesByTo
@@ -98,6 +108,7 @@ export interface FileRouteTypes {
     | '/contato'
     | '/figures'
     | '/filamento'
+    | '/finalizar'
     | '/sobre'
     | '/api/public/img/$'
   id:
@@ -107,6 +118,7 @@ export interface FileRouteTypes {
     | '/contato'
     | '/figures'
     | '/filamento'
+    | '/finalizar'
     | '/sobre'
     | '/api/public/img/$'
   fileRoutesById: FileRoutesById
@@ -117,6 +129,7 @@ export interface RootRouteChildren {
   ContatoRoute: typeof ContatoRoute
   FiguresRoute: typeof FiguresRoute
   FilamentoRoute: typeof FilamentoRoute
+  FinalizarRoute: typeof FinalizarRoute
   SobreRoute: typeof SobreRoute
   ApiPublicImgSplatRoute: typeof ApiPublicImgSplatRoute
 }
@@ -158,6 +171,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FilamentoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/finalizar': {
+      id: '/finalizar'
+      path: '/finalizar'
+      fullPath: '/finalizar'
+      preLoaderRoute: typeof FinalizarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sobre': {
       id: '/sobre'
       path: '/sobre'
@@ -181,6 +201,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContatoRoute: ContatoRoute,
   FiguresRoute: FiguresRoute,
   FilamentoRoute: FilamentoRoute,
+  FinalizarRoute: FinalizarRoute,
   SobreRoute: SobreRoute,
   ApiPublicImgSplatRoute: ApiPublicImgSplatRoute,
 }
