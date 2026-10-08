@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Suspense, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight, LogOut, MessageCircle, RefreshCw, Save, Trash2 } from "lucide-react";
 import { ErrorBoundary } from "react-error-boundary";
 import { toast } from "sonner";
@@ -65,7 +65,9 @@ function OrdersList({ creds }: { creds: AdminCreds }) {
 }
 function OrderView({ id, creds, onChange, onDelete }: { id: string; creds: AdminCreds; onChange: () => Promise<void>; onDelete: () => void }) {
   const detail = useServerFn(adminOrderDetail);
-  const { data: order } = useSuspenseQuery({ queryKey: ["admin-orders", "detail", id], queryFn: () => detail({ data: { creds, id } }) });
+  const { data: order, isError, refetch } = useQuery({ queryKey: ["admin-orders", "detail", id], queryFn: () => detail({ data: { creds, id } }) });
+  if (isError) return <div role="alert"><p>Não foi possível carregar este pedido.</p><Button onClick={() => refetch()}>Tentar novamente</Button></div>;
+  if (!order) return <p role="status">Carregando pedido…</p>;
   return <OrderEditor key={order.id} order={order} creds={creds} onChange={onChange} onDelete={onDelete} />;
 }
 function OrderEditor({ order, creds, onChange, onDelete }: { order: OrderDetail; creds: AdminCreds; onChange: () => Promise<void>; onDelete: () => void }) {
