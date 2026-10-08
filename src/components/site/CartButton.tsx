@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Minus, Plus, ShoppingCart, Trash2 } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
@@ -8,6 +8,11 @@ import { formatPrice } from "@/lib/config";
 export function CartButton() {
   const items = useCart();
   const [open, setOpen] = useState(false);
+  useEffect(() => {
+    const h = () => setOpen(true);
+    window.addEventListener("nll-open-cart", h);
+    return () => window.removeEventListener("nll-open-cart", h);
+  }, []);
   const count = items.reduce((s, i) => s + i.qty, 0);
   const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
   return (
@@ -56,9 +61,12 @@ export function CartButton() {
                   </li>
                 ))}
               </ul>
-              <div className="flex items-center justify-between border-t p-4">
-                <span className="text-muted-foreground">Subtotal:</span>
-                <span className="font-display text-xl font-bold text-primary">{formatPrice(subtotal)}</span>
+              <div className="space-y-3 border-t p-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground">Subtotal:</span>
+                  <span className="font-display text-xl font-bold text-primary">{formatPrice(subtotal)}</span>
+                </div>
+                <Link to="/finalizar" onClick={() => setOpen(false)} className="block w-full rounded-xl bg-primary px-6 py-3 text-center font-bold text-primary-foreground shadow-glow">Finalizar pedido</Link>
               </div>
             </>
           )}
