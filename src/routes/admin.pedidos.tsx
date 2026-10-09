@@ -29,7 +29,7 @@ function OrdersPage() {
   return <AdminAccess>{(creds, logout) => <div className="mx-auto max-w-7xl px-4 py-6">
     <header className="mb-8 flex flex-wrap items-center justify-between gap-4 border-b pb-4">
       <div><Logo /><p className="mt-2 text-sm font-bold tracking-widest text-primary">PAINEL NINE LIVES LAB</p></div>
-      <nav className="flex flex-wrap gap-2 text-sm"><Button asChild variant="ghost"><Link to="/admin/" search={{ aba: "produtos" }}>Produtos</Link></Button><Button asChild variant="ghost"><Link to="/admin/" search={{ aba: "categorias" }}>Categorias</Link></Button><AdminOrdersLink creds={creds} /><Button asChild variant="ghost"><Link to="/">Ver site</Link></Button><Button variant="ghost" onClick={logout}><LogOut /> Sair</Button></nav>
+      <nav className="flex flex-wrap gap-2 text-sm"><Button asChild variant="ghost"><Link to="/admin" search={{ aba: "produtos" }}>Produtos</Link></Button><Button asChild variant="ghost"><Link to="/admin" search={{ aba: "categorias" }}>Categorias</Link></Button><AdminOrdersLink creds={creds} /><Button asChild variant="ghost"><Link to="/">Ver site</Link></Button><Button variant="ghost" onClick={logout}><LogOut /> Sair</Button></nav>
     </header>
     <ErrorBoundary fallbackRender={({ resetErrorBoundary }) => <div role="alert" className="space-y-4"><p>Não foi possível carregar os pedidos. Confira sua conexão ou entre novamente.</p><Button onClick={resetErrorBoundary}>Tentar novamente</Button><Button variant="outline" onClick={logout}>Sair</Button></div>}>
       <Suspense fallback={<p role="status" className="py-8 text-muted-foreground">Carregando pedidos…</p>}><OrdersList creds={creds} /></Suspense>
