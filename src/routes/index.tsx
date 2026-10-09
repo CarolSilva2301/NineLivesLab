@@ -53,7 +53,7 @@ function HeroCarousel() {
             <span className="w-fit rounded-full border border-gold/40 bg-background/50 px-3 py-1 text-[10px] font-semibold tracking-wider text-gold backdrop-blur md:px-4 md:py-1.5 md:text-xs">{s.tag}</span>
             {idx === 0 ? <h1 className="mt-3 max-w-3xl text-3xl font-bold leading-tight tracking-tight md:mt-6 md:text-7xl md:leading-[0.95]">{s.title}</h1>
               : <h2 className="mt-3 max-w-3xl text-3xl font-bold leading-tight tracking-tight md:mt-6 md:text-7xl md:leading-[0.95]">{s.title}</h2>}
-            <p className="mt-3 max-w-lg text-sm leading-6 text-muted-foreground md:mt-6 md:text-lg md:leading-normal">{s.text}</p>
+            <p className="mt-3 max-w-lg text-sm leading-6 text-muted-foreground md:mt-6 md:text-lg md:leading-7">{s.text}</p>
             {s.to.startsWith("#") ? (
               <a href={s.to} className="mt-4 inline-flex w-fit items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-primary-foreground shadow-glow md:mt-8 md:px-7 md:py-4 md:text-base">{s.cta} <ArrowRight className="h-5 w-5" /></a>
             ) : (
