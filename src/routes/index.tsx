@@ -41,12 +41,12 @@ function HeroCarousel() {
   }, [paused]);
   const go = (d: number) => setI((v) => (v + d + SLIDES.length) % SLIDES.length);
   return (
-    <section className="relative min-h-[78vh] overflow-hidden" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+    <section className="relative grid overflow-hidden md:block md:min-h-[78vh]" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
       {SLIDES.map((s, idx) => (
-        <div key={idx} aria-hidden={idx !== i} className={`absolute inset-0 transition-opacity duration-1000 ${idx === i ? "opacity-100" : "pointer-events-none opacity-0"}`}>
-          <img src={s.img} alt="" className="absolute inset-0 h-full w-full object-cover" />
-          <div className="bg-hero-fade absolute inset-0" />
-          <div className="relative mx-auto flex min-h-[78vh] max-w-7xl flex-col justify-center px-4 py-20">
+        <div key={idx} aria-hidden={idx !== i} className={`col-start-1 row-start-1 min-w-0 transition-opacity duration-1000 md:absolute md:inset-0 ${idx === i ? "opacity-100" : "pointer-events-none opacity-0"}`}>
+          <img src={s.img} alt="" className="aspect-[12/5] w-full object-contain md:absolute md:inset-0 md:h-full md:object-cover" />
+          <div className="bg-hero-fade absolute inset-0 hidden md:block" />
+          <div className="relative mx-auto flex max-w-7xl flex-col justify-center px-4 pt-6 pb-16 md:min-h-[78vh] md:py-20">
             <span className="w-fit rounded-full border border-gold/40 bg-background/50 px-4 py-1.5 text-xs font-semibold tracking-wider text-gold backdrop-blur">{s.tag}</span>
             {idx === 0 ? <h1 className="mt-6 max-w-3xl text-5xl font-bold leading-[0.95] tracking-tight md:text-7xl">{s.title}</h1>
               : <h2 className="mt-6 max-w-3xl text-5xl font-bold leading-[0.95] tracking-tight md:text-7xl">{s.title}</h2>}
@@ -60,8 +60,8 @@ function HeroCarousel() {
         </div>
       ))}
       <div className="snow pointer-events-none absolute inset-0" />
-      <button onClick={() => go(-1)} aria-label="Anterior" className="absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-background/60 p-1.5 backdrop-blur md:left-3 md:p-2"><ChevronLeft className="h-5 w-5 md:h-6 md:w-6" /></button>
-<button onClick={() => go(1)} aria-label="Próximo" className="absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-background/60 p-1.5 backdrop-blur md:right-3 md:p-2"><ChevronRight className="h-5 w-5 md:h-6 md:w-6" /></button>
+      <button onClick={() => go(-1)} aria-label="Anterior" className="absolute left-2 top-[calc(100vw*5/24)] z-10 -translate-y-1/2 rounded-full bg-background/60 p-1.5 backdrop-blur md:left-3 md:top-1/2 md:p-2"><ChevronLeft className="h-5 w-5 md:h-6 md:w-6" /></button>
+<button onClick={() => go(1)} aria-label="Próximo" className="absolute right-2 top-[calc(100vw*5/24)] z-10 -translate-y-1/2 rounded-full bg-background/60 p-1.5 backdrop-blur md:right-3 md:top-1/2 md:p-2"><ChevronRight className="h-5 w-5 md:h-6 md:w-6" /></button>
       <div className="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 gap-2">
         {SLIDES.map((_, idx) => (
           <button key={idx} onClick={() => setI(idx)} aria-label={`Banner ${idx + 1}`} className={`h-2.5 rounded-full transition-all ${idx === i ? "w-8 bg-primary" : "w-2.5 bg-foreground/40"}`} />
