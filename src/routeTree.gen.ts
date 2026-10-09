@@ -15,6 +15,7 @@ import { Route as ContatoRouteImport } from './routes/contato'
 import { Route as FiguresRouteImport } from './routes/figures'
 import { Route as FilamentoRouteImport } from './routes/filamento'
 import { Route as FinalizarRouteImport } from './routes/finalizar'
+import { Route as ProdutosRouteImport } from './routes/produtos'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminPedidosRouteImport } from './routes/admin.pedidos'
@@ -50,6 +51,11 @@ const FinalizarRoute = FinalizarRouteImport.update({
   path: '/finalizar',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProdutosRoute = ProdutosRouteImport.update({
+  id: '/produtos',
+  path: '/produtos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SobreRoute = SobreRouteImport.update({
   id: '/sobre',
   path: '/sobre',
@@ -78,6 +84,7 @@ export interface FileRoutesByFullPath {
   '/figures': typeof FiguresRoute
   '/filamento': typeof FilamentoRoute
   '/finalizar': typeof FinalizarRoute
+  '/produtos': typeof ProdutosRoute
   '/sobre': typeof SobreRoute
   '/admin/pedidos': typeof AdminPedidosRoute
   '/admin/': typeof AdminIndexRoute
@@ -89,6 +96,7 @@ export interface FileRoutesByTo {
   '/figures': typeof FiguresRoute
   '/filamento': typeof FilamentoRoute
   '/finalizar': typeof FinalizarRoute
+  '/produtos': typeof ProdutosRoute
   '/sobre': typeof SobreRoute
   '/admin/pedidos': typeof AdminPedidosRoute
   '/admin': typeof AdminIndexRoute
@@ -102,6 +110,7 @@ export interface FileRoutesById {
   '/figures': typeof FiguresRoute
   '/filamento': typeof FilamentoRoute
   '/finalizar': typeof FinalizarRoute
+  '/produtos': typeof ProdutosRoute
   '/sobre': typeof SobreRoute
   '/admin/pedidos': typeof AdminPedidosRoute
   '/admin/': typeof AdminIndexRoute
@@ -116,6 +125,7 @@ export interface FileRouteTypes {
     | '/figures'
     | '/filamento'
     | '/finalizar'
+    | '/produtos'
     | '/sobre'
     | '/admin/pedidos'
     | '/admin/'
@@ -127,6 +137,7 @@ export interface FileRouteTypes {
     | '/figures'
     | '/filamento'
     | '/finalizar'
+    | '/produtos'
     | '/sobre'
     | '/admin/pedidos'
     | '/admin'
@@ -139,6 +150,7 @@ export interface FileRouteTypes {
     | '/figures'
     | '/filamento'
     | '/finalizar'
+    | '/produtos'
     | '/sobre'
     | '/admin/pedidos'
     | '/admin/'
@@ -152,6 +164,7 @@ export interface RootRouteChildren {
   FiguresRoute: typeof FiguresRoute
   FilamentoRoute: typeof FilamentoRoute
   FinalizarRoute: typeof FinalizarRoute
+  ProdutosRoute: typeof ProdutosRoute
   SobreRoute: typeof SobreRoute
   ApiPublicImgSplatRoute: typeof ApiPublicImgSplatRoute
 }
@@ -198,6 +211,13 @@ declare module '@tanstack/react-router' {
       path: '/finalizar'
       fullPath: '/finalizar'
       preLoaderRoute: typeof FinalizarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/produtos': {
+      id: '/produtos'
+      path: '/produtos'
+      fullPath: '/produtos'
+      preLoaderRoute: typeof ProdutosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sobre': {
@@ -250,6 +270,7 @@ const rootRouteChildren: RootRouteChildren = {
   FiguresRoute: FiguresRoute,
   FilamentoRoute: FilamentoRoute,
   FinalizarRoute: FinalizarRoute,
+  ProdutosRoute: ProdutosRoute,
   SobreRoute: SobreRoute,
   ApiPublicImgSplatRoute: ApiPublicImgSplatRoute,
 }

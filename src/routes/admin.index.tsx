@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { Pencil, Trash2, Eye, EyeOff, Plus, LogOut } from "lucide-react";
@@ -13,6 +13,11 @@ import type { Product } from "@/lib/products";
 import { AdminOrdersLink } from "@/components/site/AdminOrdersLink";
 
 export const Route = createFileRoute("/admin/")({
+  validateSearch: (search: Record<string, unknown>): { aba?: "produtos" | "categorias" } =>
+    search["aba"] === "produtos" || search["aba"] === "categorias" ? { aba: search["aba"] } : {},
+  beforeLoad: ({ search }) => {
+    if (!search.aba) throw redirect({ to: "/admin/pedidos", search: { status: "todos", page: 0 } });
+  },
   head: () => ({
     meta: [
       { title: "Painel | Nine Lives Lab" },
@@ -72,7 +77,8 @@ function Panel({ creds, onLogout }: { creds: Creds; onLogout: () => void }) {
   const list = useServerFn(adminListProducts);
   const del = useServerFn(adminDeleteProduct);
   const toggle = useServerFn(adminToggleProduct);
-  const [tab, setTab] = useState<"produtos" | "categorias">("produtos");
+  const { aba } = Route.useSearch();
+  const tab = aba ?? "produtos";
   const [items, setItems] = useState<Product[]>([]);
   const [editing, setEditing] = useState<Product | "new" | null>(null);
 
@@ -88,7 +94,7 @@ function Panel({ creds, onLogout }: { creds: Creds; onLogout: () => void }) {
         <nav className="flex flex-wrap gap-2 text-sm">
           <AdminOrdersLink creds={creds} />
           {(["produtos", "categorias"] as const).map((t) => (
-            <button key={t} onClick={() => setTab(t)} className={`rounded-lg px-4 py-2 capitalize ${tab === t ? "bg-secondary text-foreground" : "text-muted-foreground"}`}>{t}</button>
+            <Link key={t} to="/admin" search={{ aba: t }} className={`rounded-lg px-4 py-2 capitalize ${tab === t ? "bg-secondary text-foreground" : "text-muted-foreground"}`}>{t}</Link>
           ))}
           <Link to="/" className="rounded-lg px-4 py-2 text-muted-foreground">Ver site</Link>
           <button onClick={onLogout} className="flex items-center gap-1 rounded-lg px-4 py-2 text-muted-foreground"><LogOut className="h-4 w-4" /> Sair</button>

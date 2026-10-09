@@ -95,7 +95,7 @@ function Checkout() {
             <Button asChild variant="outline" className="h-auto max-w-full whitespace-normal px-4 py-3">
               <a href={orderContactWhatsapp(orderNumber)} target="_blank" rel="noopener noreferrer"><MessageCircle className="h-5 w-5" /> Falar conosco pelo WhatsApp</a>
             </Button>
-            <Link to="/figures" className="text-sm text-muted-foreground hover:text-primary">Continuar comprando</Link>
+            <Link to="/produtos" className="text-sm text-muted-foreground hover:text-primary">Continuar comprando</Link>
           </div>
         </section>
       </SiteLayout>
