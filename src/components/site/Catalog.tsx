@@ -22,7 +22,7 @@ export function ProductGrid({ items, empty }: { items: Product[]; empty?: string
   );
 }
 
-export function Catalog({ type, title, subtitle, placeholder }: { type: ProductType; title: string; subtitle: string; placeholder: string }) {
+export function Catalog({ type, title, subtitle, placeholder }: { type?: ProductType; title: string; subtitle: string; placeholder: string }) {
   const { data } = useSuspenseQuery(productsQuery);
   const [cat, setCat] = useState(() => {
   if (typeof window !== "undefined") {
@@ -31,9 +31,9 @@ export function Catalog({ type, title, subtitle, placeholder }: { type: ProductT
   return "Todos";
 });
   const [q, setQ] = useState("");
-  const cats = ["Todos", ...CATEGORIES[type]];
+  const cats = ["Todos", ...new Set(type ? CATEGORIES[type] : Object.values(CATEGORIES).flat())];
   const items = useMemo(() => data.filter((p) =>
-    p.product_type === type &&
+    (!type || p.product_type === type) &&
     (cat === "Todos" || p.category === cat) &&
     p.name.toLowerCase().includes(q.trim().toLowerCase())), [data, type, cat, q]);
 

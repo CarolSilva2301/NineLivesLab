@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useLocation } from "@tanstack/react-router";
 import { useState, type ReactNode } from "react";
 import { Menu, Search, X, MessageCircle, Instagram } from "lucide-react";
 import { SITE_CONFIG, whatsappLink } from "@/lib/config";
@@ -28,6 +28,7 @@ export function Logo() {
 
 export function SiteLayout({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
+  const { pathname } = useLocation();
   return (
     <div className="flex min-h-screen flex-col">
       <div className="xmas-lights" />
@@ -77,10 +78,10 @@ export function SiteLayout({ children }: { children: ReactNode }) {
           </div>
         </div>
       </footer>
-      <a href={whatsappLink()} target="_blank" rel="noreferrer" aria-label="Falar no WhatsApp"
+      {pathname !== "/" && <a href={whatsappLink()} target="_blank" rel="noreferrer" aria-label="Falar no WhatsApp"
         className="fixed bottom-5 right-5 z-40 grid h-14 w-14 place-items-center rounded-full bg-whatsapp text-whatsapp-foreground shadow-glow md:hidden">
         <MessageCircle className="h-6 w-6" />
-      </a>
+      </a>}
     </div>
   );
 }

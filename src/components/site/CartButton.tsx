@@ -33,7 +33,7 @@ export function CartButton() {
               <ShoppingCart className="h-10 w-10 text-muted-foreground" />
               <p className="mt-2 font-display text-lg font-bold">Seu carrinho está vazio</p>
               <p className="text-sm text-muted-foreground">Adicione produtos para começar seu pedido.</p>
-              <Link to="/figures" onClick={() => setOpen(false)} className="mt-4 rounded-xl bg-primary px-6 py-3 font-bold text-primary-foreground shadow-glow">Ver produtos</Link>
+              <Link to="/produtos" onClick={() => setOpen(false)} className="mt-4 rounded-xl bg-primary px-6 py-3 font-bold text-primary-foreground shadow-glow">Ver produtos</Link>
             </div>
           ) : (
             <>

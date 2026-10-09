@@ -17,4 +17,5 @@
 - Successful checkout renders confirmation only after the order-write result, with contact as a separate optional link; why: registering an order must not depend on external navigation.
 - Guest order creation uses a validated write-only server function and service-role-only atomic database function; why: private snapshots, authoritative prices, unique numbers and retry-safe writes without customer login.
 - Admin order operations use server-side assertAdmin before privileged access, with separate private internal notes and existing cascading item deletion; why: preserve current admin authentication and never expose orders publicly.
-- The admin parent renders Outlet with the existing product panel in its index and order management in its child route; why: preserve /admin while supporting /admin/pedidos.
+- The admin parent renders Outlet; its index defaults to orders unless an explicit aba selects the existing product/category panel; why: preserve existing admin routes and authentication while making orders the entry screen.
+- The complete /produtos catalog reuses Catalog without a product type, while department routes supply their type; why: show both departments without duplicating catalog logic.

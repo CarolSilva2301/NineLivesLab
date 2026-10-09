@@ -1,4 +1,5 @@
 # Purchase-flow adjustments
+- [ ] Point shopping links to the complete catalog, remove Home floating contact, default admin to orders and separate admin navigation; validate focused routes and checkout tests.
 - [x] Separate immediate purchase from main cart and update official contacts.
 - [x] Complete WhatsApp handoff and summary-first checkout.
 - [x] Test both flows, contacts and desktop/tablet/mobile layout.
