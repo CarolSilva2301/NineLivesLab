@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Suspense, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
-import { ChevronLeft, ChevronRight, LogOut, MessageCircle, RefreshCw, Save, Trash2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, LogOut, Mail, MessageCircle, RefreshCw, Save, Trash2 } from "lucide-react";
 import { ErrorBoundary } from "react-error-boundary";
 import { toast } from "sonner";
 import { AdminAccess } from "@/components/site/AdminAccess";
@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel } from "@/components/ui/alert-dialog";
 import { formatPrice } from "@/lib/config";
-import { ORDER_STATUSES, orderStatusSchema, orderDate, customerContactMessage, customerWhatsapp, type AdminCreds, type OrderDetail } from "@/lib/admin-orders";
+import { ORDER_STATUSES, orderStatusSchema, orderDate, customerContactMessage, customerWhatsapp, orderGmailCompose, type AdminCreds, type OrderDetail } from "@/lib/admin-orders";
 import { adminOrderList, adminOrderDetail, adminOrderStatus, adminOrderNote, adminOrderDelete } from "@/lib/admin-orders.functions";
 
 export const Route = createFileRoute("/admin/pedidos")({
@@ -80,6 +80,7 @@ function OrderEditor({ order, creds, onChange, onDelete }: { order: OrderDetail;
   const [busy, setBusy] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const contact = customerWhatsapp(order.whatsapp, message);
+  const emailCompose = orderGmailCompose(order);
   const perform = async (action: () => Promise<unknown>, success: string) => {
     setBusy(true);
     try { await action(); toast.success(success); await onChange(); }
@@ -94,6 +95,12 @@ function OrderEditor({ order, creds, onChange, onDelete }: { order: OrderDetail;
     <section className="border-t pt-5"><h3 className="mb-2 font-bold">Observação do cliente</h3><p className="whitespace-pre-wrap break-words text-sm">{order.notes || "Nenhuma observação informada."}</p></section>
     <section className="space-y-3 border-t pt-5"><label className="block space-y-2"><span className="font-bold">Nota interna</span><textarea aria-label="Nota interna" className={field} rows={3} maxLength={10000} value={note} onChange={(event) => setNote(event.target.value)} /></label><Button disabled={busy || note === savedNote} onClick={() => perform(async () => { await noteSave({ data: { creds, id: order.id, note } }); setSavedNote(note); }, "Nota interna salva")}><Save /> Salvar nota</Button></section>
     <section className="space-y-3 border-t pt-5"><label className="block space-y-2"><span className="font-bold">Mensagem para o cliente</span><textarea aria-label="Mensagem para o cliente" className={field} rows={5} value={message} onChange={(event) => setMessage(event.target.value)} /></label>{contact ? <Button asChild variant="outline"><a href={contact} target="_blank" rel="noopener noreferrer"><MessageCircle /> Chamar no WhatsApp</a></Button> : <p className="text-sm text-destructive">O WhatsApp informado pelo cliente não é um número válido.</p>}</section>
+    <div className="space-y-2 border-t pt-5">
+      {emailCompose ? <Button asChild variant="outline" className="h-auto min-h-10 max-w-full whitespace-normal text-left"><a href={emailCompose} target="_blank" rel="noopener noreferrer"><Mail className="shrink-0" /> Preparar e-mail para o cliente</a></Button> : <>
+        <Button variant="outline" disabled className="h-auto min-h-10 max-w-full whitespace-normal text-left" aria-describedby="order-email-required"><Mail className="shrink-0" /> Preparar e-mail para o cliente</Button>
+        <p id="order-email-required" className="text-sm text-muted-foreground">É necessário ter um e-mail válido cadastrado no pedido para preparar a mensagem.</p>
+      </>}
+    </div>
     <div className="border-t pt-5"><Button variant="destructive" disabled={busy} onClick={() => setDeleting(true)}><Trash2 /> Excluir pedido</Button></div>
     <AlertDialog open={deleting} onOpenChange={setDeleting}><AlertDialogContent className="w-[calc(100%-2rem)] rounded-lg"><AlertDialogHeader><AlertDialogTitle>Excluir pedido?</AlertDialogTitle><AlertDialogDescription>Essa ação removerá permanentemente o pedido e seus itens.</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel disabled={busy}>Cancelar</AlertDialogCancel><Button variant="destructive" disabled={busy} onClick={async () => { setBusy(true); try { await remove({ data: { creds, id: order.id, confirmed: true } }); setDeleting(false); toast.success("Pedido excluído"); onDelete(); } catch { toast.error("Não foi possível excluir o pedido."); } finally { setBusy(false); } }}>Excluir definitivamente</Button></AlertDialogFooter></AlertDialogContent></AlertDialog>
   </div>;

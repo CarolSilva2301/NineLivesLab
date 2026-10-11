@@ -1,5 +1,6 @@
 import { z } from "zod";
 import type { Tables } from "@/integrations/supabase/types";
+import { formatPrice, SITE_CONFIG } from "@/lib/config";
 
 export const ORDER_STATUSES = {
   novo: "Novo",
@@ -26,4 +27,38 @@ export function customerWhatsapp(phone: string, message: string) {
 }
 export function orderDate(value: string) {
   return new Intl.DateTimeFormat("pt-BR", { dateStyle: "short", timeStyle: "short", timeZone: "America/Sao_Paulo" }).format(new Date(value));
+}
+
+export function orderGmailCompose(order: {
+  email: string | null;
+  customer_name?: string | null;
+  order_number: string;
+  total: number;
+  items: { product_name: string; quantity: number; subtotal: number }[];
+}) {
+  const email = z.string().trim().email().safeParse(order.email);
+  if (!email.success) return null;
+  const name = order.customer_name?.trim();
+  const body = [
+    name ? `Olá, ${name}! Tudo bem?` : "Olá! Tudo bem?",
+    "",
+    "Recebemos seu pedido na Nine Lives Lab. Confira o resumo:",
+    "",
+    `Pedido: ${order.order_number}`,
+    "",
+    "Itens:",
+    ...order.items.map((item) => `- ${item.product_name} — Quantidade: ${item.quantity} — Valor: ${formatPrice(item.subtotal)}`),
+    "",
+    `Total do pedido: ${formatPrice(order.total)}`,
+    "",
+    "Agradecemos pela sua compra e pela confiança na Nine Lives Lab!",
+    "",
+    "Se tiver alguma dúvida, entre em contato conosco pelo WhatsApp.",
+    "",
+    "Atenciosamente,",
+    "Equipe Nine Lives Lab",
+    `Instagram: ${SITE_CONFIG.instagramHandle}`,
+  ].join("\n");
+  const params = new URLSearchParams({ view: "cm", fs: "1", to: email.data, su: `Confirmação do seu pedido ${order.order_number} - Nine Lives Lab`, body });
+  return `https://mail.google.com/mail/?${params.toString()}`;
 }

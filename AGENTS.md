@@ -19,3 +19,4 @@
 - Admin order operations use server-side assertAdmin before privileged access, with separate private internal notes and existing cascading item deletion; why: preserve current admin authentication and never expose orders publicly.
 - The admin parent renders Outlet; its index defaults to orders unless an explicit aba selects the existing product/category panel; why: preserve existing admin routes and authentication while making orders the entry screen.
 - The complete /produtos catalog reuses Catalog without a product type, while department routes supply their type; why: show both departments without duplicating catalog logic.
+- Manual order email composition uses a browser-safe helper with an explicit snapshot field allowlist and Gmail compose URL; why: keep preparation testable, exclude private notes and avoid mail credentials or automatic delivery.
