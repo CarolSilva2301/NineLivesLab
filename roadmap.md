@@ -1,4 +1,5 @@
 # Purchase-flow adjustments
+- [x] Add manual Gmail order composition; 18 focused tests passed and existing orders verified for enabled/new-tab and missing-email/disabled cases without sending email or modifying orders.
 - [x] Point shopping links to the complete catalog, remove Home floating contact, default admin to orders and separate admin navigation; validated browser navigation and 11 focused tests.
 - [x] Separate immediate purchase from main cart and update official contacts.
 - [x] Complete WhatsApp handoff and summary-first checkout.
