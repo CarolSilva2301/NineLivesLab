@@ -20,3 +20,4 @@
 - The admin parent renders Outlet; its index defaults to orders unless an explicit aba selects the existing product/category panel; why: preserve existing admin routes and authentication while making orders the entry screen.
 - The complete /produtos catalog reuses Catalog without a product type, while department routes supply their type; why: show both departments without duplicating catalog logic.
 - Manual order email composition uses a browser-safe helper with an explicit snapshot field allowlist and Gmail compose URL; why: keep preparation testable, exclude private notes and avoid mail credentials or automatic delivery.
+- Restorations use a separate service-role-only table and private 'restorations' bucket, written via assertAdmin server functions in src/lib/restorations.functions.ts; why: keep restoration data and photos private under the existing admin login.

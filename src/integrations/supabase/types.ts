@@ -160,12 +160,79 @@ export type Database = {
         }
         Relationships: []
       }
+      restorations: {
+        Row: {
+          after_images: string[]
+          before_images: string[]
+          created_at: string
+          customer_name: string
+          damage_description: string
+          delivered_at: string | null
+          email: string | null
+          expected_delivery_at: string | null
+          figure_name: string
+          id: string
+          notes: string
+          paid_value: number
+          payment_method: string
+          received_at: string | null
+          remaining_value: number | null
+          restoration_number: string
+          service_description: string
+          total_value: number
+          whatsapp: string
+        }
+        Insert: {
+          after_images?: string[]
+          before_images?: string[]
+          created_at?: string
+          customer_name: string
+          damage_description?: string
+          delivered_at?: string | null
+          email?: string | null
+          expected_delivery_at?: string | null
+          figure_name?: string
+          id?: string
+          notes?: string
+          paid_value?: number
+          payment_method?: string
+          received_at?: string | null
+          remaining_value?: number | null
+          restoration_number?: string
+          service_description?: string
+          total_value?: number
+          whatsapp: string
+        }
+        Update: {
+          after_images?: string[]
+          before_images?: string[]
+          created_at?: string
+          customer_name?: string
+          damage_description?: string
+          delivered_at?: string | null
+          email?: string | null
+          expected_delivery_at?: string | null
+          figure_name?: string
+          id?: string
+          notes?: string
+          paid_value?: number
+          payment_method?: string
+          received_at?: string | null
+          remaining_value?: number | null
+          restoration_number?: string
+          service_description?: string
+          total_value?: number
+          whatsapp?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
       next_order_number: { Args: never; Returns: string }
+      next_restoration_number: { Args: never; Returns: string }
       register_order: {
         Args: { p_customer: Json; p_items: Json; p_request_id: string }
         Returns: Json

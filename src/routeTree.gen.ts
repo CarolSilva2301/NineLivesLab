@@ -19,6 +19,7 @@ import { Route as ProdutosRouteImport } from './routes/produtos'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminPedidosRouteImport } from './routes/admin.pedidos'
+import { Route as AdminRestauracoesRouteImport } from './routes/admin.restauracoes'
 import { Route as ApiPublicImgSplatRouteImport } from './routes/api/public/img.$'
 
 const IndexRoute = IndexRouteImport.update({
@@ -71,6 +72,11 @@ const AdminPedidosRoute = AdminPedidosRouteImport.update({
   path: '/pedidos',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminRestauracoesRoute = AdminRestauracoesRouteImport.update({
+  id: '/restauracoes',
+  path: '/restauracoes',
+  getParentRoute: () => AdminRoute,
+} as any)
 const ApiPublicImgSplatRoute = ApiPublicImgSplatRouteImport.update({
   id: '/api/public/img/$',
   path: '/api/public/img/$',
@@ -87,6 +93,7 @@ export interface FileRoutesByFullPath {
   '/produtos': typeof ProdutosRoute
   '/sobre': typeof SobreRoute
   '/admin/pedidos': typeof AdminPedidosRoute
+  '/admin/restauracoes': typeof AdminRestauracoesRoute
   '/admin/': typeof AdminIndexRoute
   '/api/public/img/$': typeof ApiPublicImgSplatRoute
 }
@@ -99,6 +106,7 @@ export interface FileRoutesByTo {
   '/produtos': typeof ProdutosRoute
   '/sobre': typeof SobreRoute
   '/admin/pedidos': typeof AdminPedidosRoute
+  '/admin/restauracoes': typeof AdminRestauracoesRoute
   '/admin': typeof AdminIndexRoute
   '/api/public/img/$': typeof ApiPublicImgSplatRoute
 }
@@ -113,6 +121,7 @@ export interface FileRoutesById {
   '/produtos': typeof ProdutosRoute
   '/sobre': typeof SobreRoute
   '/admin/pedidos': typeof AdminPedidosRoute
+  '/admin/restauracoes': typeof AdminRestauracoesRoute
   '/admin/': typeof AdminIndexRoute
   '/api/public/img/$': typeof ApiPublicImgSplatRoute
 }
@@ -128,6 +137,7 @@ export interface FileRouteTypes {
     | '/produtos'
     | '/sobre'
     | '/admin/pedidos'
+    | '/admin/restauracoes'
     | '/admin/'
     | '/api/public/img/$'
   fileRoutesByTo: FileRoutesByTo
@@ -140,6 +150,7 @@ export interface FileRouteTypes {
     | '/produtos'
     | '/sobre'
     | '/admin/pedidos'
+    | '/admin/restauracoes'
     | '/admin'
     | '/api/public/img/$'
   id:
@@ -153,6 +164,7 @@ export interface FileRouteTypes {
     | '/produtos'
     | '/sobre'
     | '/admin/pedidos'
+    | '/admin/restauracoes'
     | '/admin/'
     | '/api/public/img/$'
   fileRoutesById: FileRoutesById
@@ -241,6 +253,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminPedidosRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/restauracoes': {
+      id: '/admin/restauracoes'
+      path: '/restauracoes'
+      fullPath: '/admin/restauracoes'
+      preLoaderRoute: typeof AdminRestauracoesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/api/public/img/$': {
       id: '/api/public/img/$'
       path: '/api/public/img/$'
@@ -253,11 +272,13 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminPedidosRoute: typeof AdminPedidosRoute
+  AdminRestauracoesRoute: typeof AdminRestauracoesRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminPedidosRoute: AdminPedidosRoute,
+  AdminRestauracoesRoute: AdminRestauracoesRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 

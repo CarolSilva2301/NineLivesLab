@@ -96,6 +96,7 @@ function Panel({ creds, onLogout }: { creds: Creds; onLogout: () => void }) {
           {(["produtos", "categorias"] as const).map((t) => (
             <Link key={t} to="/admin" search={{ aba: t }} className={`rounded-lg px-4 py-2 capitalize ${tab === t ? "bg-secondary text-foreground" : "text-muted-foreground"}`}>{t}</Link>
           ))}
+          <Link to="/admin/restauracoes" className="rounded-lg px-4 py-2 text-muted-foreground">Restaurações</Link>
           <Link to="/" className="rounded-lg px-4 py-2 text-muted-foreground">Ver site</Link>
           <button onClick={onLogout} className="flex items-center gap-1 rounded-lg px-4 py-2 text-muted-foreground"><LogOut className="h-4 w-4" /> Sair</button>
         </nav>
