@@ -2,6 +2,18 @@ import { z } from "zod";
 
 export const PAYMENT_METHODS = { pix: "Pix", dinheiro: "Dinheiro", cartao: "Cartão", outro: "Outro" } as const;
 
+export const RESTORATION_STATUSES = { recebida: "Recebida", em_restauracao: "Em restauração", pronta: "Pronta", entregue: "Entregue" } as const;
+export type RestorationStatus = keyof typeof RESTORATION_STATUSES;
+export const restorationStatusSchema = z.enum(["recebida", "em_restauracao", "pronta", "entregue"]);
+
+export const PAYMENT_STATUSES = { pendente: "Pendente", parcial: "Parcialmente pago", pago: "Pago" } as const;
+export type PaymentStatus = keyof typeof PAYMENT_STATUSES;
+export function paymentStatus(total: number, paid: number): PaymentStatus {
+  if (paid <= 0) return "pendente";
+  if (paid < total) return "parcial";
+  return "pago";
+}
+
 const date = z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable();
 const money = z.number().finite().min(0).max(10_000_000);
 
@@ -21,6 +33,7 @@ export const restorationSchema = z.object({
   delivered_at: date,
   before_images: z.array(z.string().regex(/^[a-f0-9-]{36}\.[a-z0-9]{1,5}$/i)).max(20),
   after_images: z.array(z.string().regex(/^[a-f0-9-]{36}\.[a-z0-9]{1,5}$/i)).max(20),
+  status: restorationStatusSchema.default("recebida"),
 }).refine((v) => v.paid_value <= v.total_value, { message: "O valor pago não pode ser maior que o total", path: ["paid_value"] });
 
 export type RestorationInput = z.infer<typeof restorationSchema>;

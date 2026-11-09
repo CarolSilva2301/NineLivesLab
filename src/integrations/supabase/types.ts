@@ -179,6 +179,7 @@ export type Database = {
           remaining_value: number | null
           restoration_number: string
           service_description: string
+          status: string
           total_value: number
           whatsapp: string
         }
@@ -200,6 +201,7 @@ export type Database = {
           remaining_value?: number | null
           restoration_number?: string
           service_description?: string
+          status?: string
           total_value?: number
           whatsapp: string
         }
@@ -221,6 +223,7 @@ export type Database = {
           remaining_value?: number | null
           restoration_number?: string
           service_description?: string
+          status?: string
           total_value?: number
           whatsapp?: string
         }

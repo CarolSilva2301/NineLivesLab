@@ -43,6 +43,13 @@
       "when": 1793879838232,
       "tag": "0005_restorations",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1794189943225,
+      "tag": "0006_restoration_status",
+      "breakpoints": true
     }
   ]
 }

@@ -9,4 +9,5 @@
 - [x] Replace automatic WhatsApp handoff with successful-order confirmation and optional contact; verify success and failure paths (16 tests passed).
 - [x] Add private internal notes and validated admin order operations using existing security.
 - [x] Add /admin/pedidos, live new-order count, query filters, details, status, notes, customer contact and confirmed deletion.
+- [x] Restorations stage 2: listing with indicators, search/filters, independent service status, automatic payment status, details with zoomable photos, edit and confirmed deletion with storage cleanup; verified end-to-end in preview (38 tests passed, test record removed, real REST-0001 preserved).
 - [ ] Previous-stage security review and test-order cleanup deferred pending separately authorized scope; not part of this navigation-only update.
