@@ -1,4 +1,5 @@
 # Purchase-flow adjustments
+- [x] Adjust only restoration receipt typography and spacing: 22 px brand, 17 px title/amounts, 16 px service number and 15 px data; 16 existing tests passed, real-record preview/print/reprint and mobile checked with identical font sizes, one-page 110 mm PDF and long descriptions verified. No records or other admin pages changed; physical printer/driver remains unverified.
 - [x] Final restoration stage: list/detail thermal receipt actions, 110 mm rolls with configurable initial 100 mm useful area, content-measured height; 16 focused tests passed, real-record browser printing/reprinting and mobile verified, 110 mm PDF and long-text PDF checked without modifying records. Physical printer/driver verification remains user-side.
 - [x] Add manual Gmail order composition; 18 focused tests passed and existing orders verified for enabled/new-tab and missing-email/disabled cases without sending email or modifying orders.
 - [x] Point shopping links to the complete catalog, remove Home floating contact, default admin to orders and separate admin navigation; validated browser navigation and 11 focused tests.

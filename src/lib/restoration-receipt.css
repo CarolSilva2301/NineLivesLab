@@ -5,24 +5,30 @@
   padding: 3mm var(--receipt-side-margin, 5mm);
   background: var(--receipt-paper);
   color: var(--receipt-ink);
-  font: 12px/1.45 Arial, Helvetica, sans-serif;
+  font: 15px/1.6 Arial, Helvetica, sans-serif;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
   overflow-wrap: anywhere;
   letter-spacing: 0;
 }
 .restoration-receipt * { box-sizing: border-box; }
 .restoration-receipt header { text-align: center; }
-.restoration-receipt h1 { font: bold 20px/1.2 Arial, Helvetica, sans-serif; margin: 0 0 2mm; }
-.restoration-receipt .receipt-title { font-weight: bold; }
-.restoration-receipt h2 { font: bold 13px/1.4 Arial, Helvetica, sans-serif; margin: 0 0 2mm; break-after: avoid; }
-.restoration-receipt p { margin: 1mm 0; }
-.restoration-receipt section, .restoration-receipt footer { border-top: 0.25mm dashed var(--receipt-ink); margin-top: 3mm; padding-top: 3mm; }
+.restoration-receipt h1 { font: bold 22px/1.3 Arial, Helvetica, sans-serif; margin: 0 0 3mm; }
+.restoration-receipt .receipt-title { font-size: 17px; line-height: 1.5; font-weight: bold; }
+.restoration-receipt .receipt-number { font-size: 16px; font-weight: bold; }
+.restoration-receipt h2 { font: bold 15px/1.5 Arial, Helvetica, sans-serif; margin: 0 0 3mm; break-after: avoid; }
+.restoration-receipt p { margin: 2mm 0; }
+.restoration-receipt section, .restoration-receipt footer { border-top: 0.25mm dashed var(--receipt-ink); margin-top: 5mm; padding-top: 4mm; }
 .restoration-receipt dl { margin: 0; }
-.restoration-receipt .receipt-row { margin-bottom: 2mm; break-inside: avoid; }
+.restoration-receipt .receipt-row { margin-bottom: 3mm; break-inside: avoid; }
 .restoration-receipt dt { font-weight: normal; }
-.restoration-receipt dd { font-weight: bold; margin: 0; white-space: pre-wrap; }
+.restoration-receipt dd { font-weight: bold; margin: 1mm 0 0; white-space: pre-wrap; }
+.restoration-receipt .receipt-amount dd { font-size: 17px; font-weight: bold; }
 .restoration-receipt header { break-inside: avoid; }
 .restoration-receipt .receipt-signature { border-top: 0.25mm solid var(--receipt-ink); text-align: center; padding-top: 1mm; margin-top: 13mm; break-inside: avoid; }
-.receipt-preview { max-width: 100%; overflow: hidden; }
+.receipt-preview { max-width: 100%; overflow-x: auto; }
+.receipt-preview > div { width: 110mm; }
+.receipt-preview .restoration-receipt { width: 110mm; max-width: none; }
 /* Defaults only; the isolated print window receives a content-measured 110 mm page. */
 @page { size: auto; margin: 0; }
 body:has(> .restoration-receipt) { margin: 0; padding: 0; width: 110mm; }

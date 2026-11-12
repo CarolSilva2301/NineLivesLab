@@ -41,12 +41,12 @@ export function receiptGeometry(usefulWidthMm = Number(RECEIPT_PRINT.usefulWidth
 export function receiptHtml(record: ReceiptRecord, issuedAt: Date) {
   const r = receiptData(record, issuedAt);
   const escape = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c] ?? c);
-  const row = (label: string, value: string) => `<div class="receipt-row"><dt>${label}</dt><dd>${escape(value)}</dd></div>`;
+  const row = (label: string, value: string, amount = false) => `<div class="receipt-row${amount ? " receipt-amount" : ""}"><dt>${label}</dt><dd>${escape(value)}</dd></div>`;
   const section = (title: string, rows: string) => `<section><h2>${title}</h2><dl>${rows}</dl></section>`;
-  return `<article class="restoration-receipt"><header><h1>NINE LIVES LAB</h1><p class="receipt-title">RECIBO DE RESTAURAÇÃO DE FIGURE</p><p><strong>${escape(r.number)}</strong></p><p>Emissão: ${escape(r.issuedAt)}</p></header>
+  return `<article class="restoration-receipt"><header><h1>NINE LIVES LAB</h1><p class="receipt-title">RECIBO DE RESTAURAÇÃO DE FIGURE</p><p class="receipt-number"><strong>${escape(r.number)}</strong></p><p>Emissão: ${escape(r.issuedAt)}</p></header>
     ${section("DADOS DO CLIENTE", row("Nome completo", r.customer) + row("Telefone/WhatsApp", r.phone))}
     ${section("DADOS DA PEÇA", row("Nome da figure", r.figure) + row("Serviço de restauração", r.service) + (r.notes ? row("Observações", r.notes) : ""))}
-    ${section("DADOS FINANCEIROS", row("Valor total do serviço", r.total) + row("Valor pago", r.paid) + row("Saldo restante", r.balance) + row("Forma de pagamento", r.method) + row("Status financeiro", r.payment))}
+    ${section("DADOS FINANCEIROS", row("Valor total do serviço", r.total, true) + row("Valor pago", r.paid, true) + row("Saldo restante", r.balance, true) + row("Forma de pagamento", r.method) + row("Status financeiro", r.payment))}
     ${section("DATAS", row("Recebimento da peça", r.received) + row("Previsão de entrega", r.expected) + (r.delivered ? row("Entrega efetiva", r.delivered) : ""))}
     <footer><p>Peça recebida para realização do serviço de restauração descrito neste recibo. Agradecemos pela confiança na Nine Lives Lab!</p><div class="receipt-signature">Assinatura do cliente</div><div class="receipt-signature">Assinatura do responsável pelo serviço</div></footer></article>`;
 }
