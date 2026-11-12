@@ -21,3 +21,4 @@
 - The complete /produtos catalog reuses Catalog without a product type, while department routes supply their type; why: show both departments without duplicating catalog logic.
 - Manual order email composition uses a browser-safe helper with an explicit snapshot field allowlist and Gmail compose URL; why: keep preparation testable, exclude private notes and avoid mail credentials or automatic delivery.
 - Restorations use a separate service-role-only table and private 'restorations' bucket, written via assertAdmin server functions in src/lib/restorations.functions.ts; why: keep restoration data and photos private under the existing admin login.
+- Restoration receipts use an escaped browser-safe field allowlist and an isolated print document with content-measured roll height; why: reuse authorized existing records without copying data, exposing photos/credentials, or printing admin controls.

@@ -40,6 +40,8 @@
 }
 
 :root {
+  --receipt-paper: #fff;
+  --receipt-ink: #000;
   --radius: 0.75rem;
   --background: oklch(0.13 0.005 60);
   --foreground: oklch(0.97 0.005 80);

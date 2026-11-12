@@ -1,4 +1,5 @@
 # Purchase-flow adjustments
+- [x] Final restoration stage: list/detail thermal receipt actions, 110 mm rolls with configurable initial 100 mm useful area, content-measured height; 16 focused tests passed, real-record browser printing/reprinting and mobile verified, 110 mm PDF and long-text PDF checked without modifying records. Physical printer/driver verification remains user-side.
 - [x] Add manual Gmail order composition; 18 focused tests passed and existing orders verified for enabled/new-tab and missing-email/disabled cases without sending email or modifying orders.
 - [x] Point shopping links to the complete catalog, remove Home floating contact, default admin to orders and separate admin navigation; validated browser navigation and 11 focused tests.
 - [x] Separate immediate purchase from main cart and update official contacts.

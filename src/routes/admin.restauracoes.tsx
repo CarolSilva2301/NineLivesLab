@@ -10,6 +10,7 @@ import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, A
 import { Logo } from "@/components/site/SiteLayout";
 import { AdminAccess } from "@/components/site/AdminAccess";
 import { AdminOrdersLink } from "@/components/site/AdminOrdersLink";
+import { RestorationReceiptPrint } from "@/components/site/RestorationReceiptPrint";
 import { formatPrice } from "@/lib/config";
 import type { AdminCreds } from "@/lib/admin-orders";
 import { PAYMENT_METHODS, PAYMENT_STATUSES, RESTORATION_STATUSES, remainingBalance, restorationSchema, restorationStatusSchema, type PaymentStatus, type RestorationStatus } from "@/lib/restorations";
@@ -134,7 +135,7 @@ function RestorationList({ creds, onCreate, onEdit }: { creds: AdminCreds; onCre
       : !data || data.rows.length === 0 ? <p className="border-y py-12 text-center text-muted-foreground">Nenhuma restauração encontrada.</p>
       : <>
         <div className="hidden overflow-x-auto rounded-lg border md:block"><table className="w-full text-left text-sm">
-          <thead className="bg-card text-muted-foreground"><tr>{["Serviço", "Peça", "Cliente", "Telefone", "Recebimento", "Previsão", "Total", "Pago", "Saldo", "Status", "Pagamento"].map((l) => <th key={l} className="px-3 py-3 font-medium">{l}</th>)}</tr></thead>
+          <thead className="bg-card text-muted-foreground"><tr>{["Serviço", "Peça", "Cliente", "Telefone", "Recebimento", "Previsão", "Total", "Pago", "Saldo", "Status", "Pagamento", "Recibo"].map((l) => <th key={l} className="px-3 py-3 font-medium">{l}</th>)}</tr></thead>
           <tbody className="divide-y">{data.rows.map((r) => <tr key={r.id} className="hover:bg-secondary/50">
             <td className="px-3 py-3"><Button variant="link" className="h-auto p-0 font-bold" onClick={() => setSelected(r.id)}>{r.restoration_number}</Button></td>
             <td className="max-w-40 break-words px-3 py-3">{r.figure_name || "—"}</td>
@@ -147,6 +148,7 @@ function RestorationList({ creds, onCreate, onEdit }: { creds: AdminCreds; onCre
             <td className="px-3 py-3">{formatPrice(remainingBalance(r.total_value, r.paid_value))}</td>
             <td className="px-3 py-3"><select aria-label={`Status de ${r.restoration_number}`} className="rounded-lg border bg-background px-2 py-1.5 text-sm" value={r.status} onChange={(e) => changeStatus(r.id, e.target.value)}>{Object.entries(RESTORATION_STATUSES).map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select></td>
             <td className="px-3 py-3"><PaymentBadge value={r.payment_status} /></td>
+            <td className="px-3 py-3"><RestorationReceiptPrint record={r} /></td>
           </tr>)}</tbody>
         </table></div>
         <div className="grid gap-3 md:hidden">{data.rows.map((r) => <article key={r.id} className="space-y-3 rounded-lg border bg-card p-4">
@@ -158,6 +160,7 @@ function RestorationList({ creds, onCreate, onEdit }: { creds: AdminCreds; onCre
           <div className="flex flex-wrap justify-between gap-2 text-sm"><span className="font-bold">{formatPrice(r.total_value)}</span><span className="text-muted-foreground">Saldo: {formatPrice(remainingBalance(r.total_value, r.paid_value))}</span></div>
           <div className="flex flex-wrap justify-between gap-2 text-sm text-muted-foreground"><span>Recebida: {brDate(r.received_at)}</span><span>Previsão: {brDate(r.expected_delivery_at)}</span></div>
           <select aria-label={`Status de ${r.restoration_number}`} className={field} value={r.status} onChange={(e) => changeStatus(r.id, e.target.value)}>{Object.entries(RESTORATION_STATUSES).map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select>
+          <RestorationReceiptPrint record={r} />
         </article>)}</div>
       </>}
     <Dialog open={!!selected} onOpenChange={(open) => { if (!open) setSelected(null); }}>
@@ -231,6 +234,7 @@ function RestorationView({ id, creds, onChange, onEdit, onDelete }: { id: string
     {photos("Antes da restauração", detail.before)}
     {photos("Depois da restauração", detail.after)}
     <div className="flex flex-wrap gap-3 border-t pt-5">
+      <RestorationReceiptPrint record={detail} />
       <Button variant="outline" disabled={busy} onClick={() => onEdit(detail)}><Pencil /> Editar restauração</Button>
       <Button variant="destructive" disabled={busy} onClick={() => setDeleting(true)}><Trash2 /> Excluir restauração</Button>
     </div>
